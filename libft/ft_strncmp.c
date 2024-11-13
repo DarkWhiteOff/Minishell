@@ -14,32 +14,62 @@
 //#include <stdio.h>
 //#include <string.h>
 
-int	ft_strncmp(const char *s1, const char *s2)
+/* void    print_env(char **env)
+{
+    int i = 0;
+    while (i < 49)
+    {
+        printf("%s\n", env[i]);
+        i++;
+    }
+} */
+
+int	ft_strncmp(const char *s1, const char *s2, size_t n)
 {
 	size_t	i;
+    size_t ok = -2;
 	char	*ss1;
 	char	*ss2;
 
 	i = 0;
 	ss1 = (char *)s1;
 	ss2 = (char *)s2;
-	while (ss1[i] == ss2[i] && ss1[i] != '\0' && ss2[i] != '\0')
+    if (n == 0)
+		return (0);
+	n = n - 1;
+    if (n == ok)
+    {
+        while (ss1[i] == ss2[i] && ss1[i] != '\0' && ss2[i] != '\0')
+		    i++;
+	    return ((unsigned char)ss1[i] - (unsigned char)ss2[i]);
+    }
+	while (ss1[i] == ss2[i] && ss1[i] != '\0' && ss2[i] != '\0' && i < n)
 		i++;
 	return ((unsigned char)ss1[i] - (unsigned char)ss2[i]);
+} 
+
+/* void    print_ascii_order(char **env)
+{
+    int i = 0;
+    char *tmp;
+
+    while (i < 49)
+    {
+        if (ft_strncmp(env[i], env[i + 1]) > 0)
+        {
+            tmp = env[i + 1];
+            env[i + 1] = env[i];
+            env[i] = tmp;
+            i = 0;
+        }
+        i++;
+    }
 }
 
-/*int     main()
+int     main(int argc, char *argv[], char **env)
 {
-        //const char s1[20] = "abcdefgh";
-        //const char s2[20] = "abcdwxyz";
-	printf("%d\n", ft_strncmp("abcdefgh", "abcdwxyz", 4));
-        printf("%d\n", ft_strncmp("zyxbcdefgh", "abcdwxyz", 0));
-	printf("%d\n", ft_strncmp("abcdefgh", "", 0));
-	printf("%d\n", ft_strncmp("test\200", "test\0", 6));
-
-	printf("%d\n", strncmp("abcdefgh", "abcdwxyz", 4));
-        printf("%d\n", strncmp("zyxbcdefgh", "abcdwxyz", 0));
-        printf("%d\n", strncmp("abcdefgh", "", 0));
-        printf("%d\n", strncmp("test\200", "test\0", 6));
+	//printf("%d\n", ft_strncmp("aaaa", "aaa"));
+	print_ascii_order(env);
+	print_env(env);
 	return (0);
-}*/
+} */

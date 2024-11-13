@@ -15,14 +15,18 @@ SRC =	ft_atoi.c \
 	ft_split.c \
 	ft_strjoin.c \
 	ft_strdup.c \
-	ft_strncmp.c
+	ft_strncmp.c \
+	ft_strchr.c \
+	ft_substr.c
 
 BFILES =	ft_atoi.o \
 		ft_isspace.o \
 		ft_split.o \
 		ft_strjoin.o \
 		ft_strdup.o \
-		ft_strncmp.o
+		ft_strncmp.o \
+		ft_strchr.o \
+		ft_substr.o
 
 OBJS = ${SRC:.c=.o}
 
