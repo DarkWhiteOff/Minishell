@@ -87,8 +87,10 @@ void    print_ascii_order(t_main *main) // a voir
     i = 0;
     while (i < main->env_len)
     {
-        printf("%s\n", sort_env[i]);
+        if (!(sort_env[i][0] == '_' && sort_env[i][0] == '=')) // faire en sorte de ne pas afficher le _= et de trouver cmment bouger le SSH_AUTH_SOCK en haut
+            printf("%s\n", sort_env[i]);
         i++;
+        
     }
     free_old_env(sort_env, main->env_len);
 }
@@ -145,6 +147,11 @@ void    export(t_main *main, char *cmd)
     i = 0;
     while (i < main->env_len)
     {
+        if (i == replace_pos)
+        {
+            main->env[i] = ft_strdup(ft_strchr(cmd, ' '));
+            i++;
+        }
         main->env[i] = ft_strdup(tmp[i]);
         i++;
         if (i == replace_pos)
@@ -215,6 +222,8 @@ void    unset(t_main *main, char *cmd)
     i = 0;
     while (i < main->env_len)
     {
+        if (i == var_to_unset)
+            i++;
         main->env[j] = ft_strdup(tmp[i]);
         i++;
         j++;
