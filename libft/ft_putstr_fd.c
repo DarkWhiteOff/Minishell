@@ -1,25 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strlen.c                                        :+:      :+:    :+:   */
+/*   ft_putstr_fd.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tzizi <tzizi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/05/22 16:07:03 by tzizi             #+#    #+#             */
-/*   Updated: 2024/11/18 15:41:00 by tzizi            ###   ########.fr       */
+/*   Created: 2024/05/23 18:14:05 by tzizi             #+#    #+#             */
+/*   Updated: 2024/11/18 16:29:04 by tzizi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-size_t	ft_strlen(const char *s)
+void	ft_putstr_fd(char *s, int fd)
 {
 	int	i;
 
 	i = 0;
 	if (!s)
-		return (0);
+		return ;
 	while (s[i])
+	{
+		ft_putchar_fd(s[i], fd);
 		i++;
-	return (i);
+	}
 }
