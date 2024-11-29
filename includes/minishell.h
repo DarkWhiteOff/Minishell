@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: tzizi <tzizi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/07 13:54:25 by zamgar            #+#    #+#             */
 /*   Updated: 2024/11/19 16:46:29 by marvin           ###   ########.fr       */
@@ -52,6 +52,7 @@ typedef struct s_main {
     char	*path;
 }	t_main;
 
+
 // LIBFT
 size_t	ft_atoi(const char *str);
 int		ft_isspace(int c);
@@ -71,7 +72,8 @@ int	ft_isdigit(int c);
 // MINISHELL
 /// Env
 int		init_env(char **env, t_main *main);
-void	print_env(t_main *main, int check);
+int     check_syntax_env(char **split);
+void	print_env(t_main *main, int check, char **split);
 /// Unset
 void	unset(t_main *main, char *cmd);
 int		check_syntax_unset(char *cmd);
@@ -83,6 +85,7 @@ void	fill_export(t_main *main, char *cmd);
 void	fill_env_export(t_main *main, char *cmd);
 void	prep_export(t_main *main, char **split);
 void	print_ascii_order(t_main *main);
+void	prep_export(t_main *main, char **split);
 /// Echo
 void	ft_echo(char **cmd);
 int		get_fd(char **cmd);
@@ -97,6 +100,7 @@ int		check_var_exists(char **env, int len, char *cmd);
 //Utils
 int		only_space_line(char *cmd);
 int     get_cmd_number(t_main *main, char **split);
+char	**ft_split_k_q_s(char const *s, char c);
 
 /// Tokens
 int		init_tokens(char **split, t_main *main);
@@ -104,9 +108,9 @@ int		is_cmd(char *s, char *path);
 int		is_sc(char *s);
 int		ft_findmltpchar(char *s1, char *s2);
 int		check_builtin(char *s);
-char	*get_rid_of(char *s, char supr);
+char	*get_rid_of(char *s);
 /// Utils Tokens
-int		ft_quote(char **s, char **split, int q);
+int		ft_quote(char **s, char **split);
 char	**clean_split(t_main *main, char **split);
 int	    handle_sc(t_main *main, char **split, int i);
 
