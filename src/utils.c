@@ -74,7 +74,6 @@ char	*sizeup_k_q_s(char const *s)
 		i++;
 	}
 	no_space[j] = '\0';
-	printf("%s\n", no_space);
 	return (no_space);
 }
 
@@ -146,7 +145,7 @@ int	count_words(char *no_space)
 	return (word);
 }
 
-char	**ft_split_k_q_s(char const *s, char c)
+char	**ft_split_k_q_s(t_main *main, char const *s, char c)
 {
 	int		i;
 	int		j;
@@ -157,7 +156,7 @@ char	**ft_split_k_q_s(char const *s, char c)
 	x = 0;
 	j = 0;
 	char *no_space = sizeup_k_q_s(s);
-	dest = malloc((count_words(no_space) + 1) * sizeof(char *));
+	dest = malloc((main->split_len + 1) * sizeof(char *));
 	if (dest == NULL || s == 0)
 		return (0);
 	while (no_space[i])
@@ -171,5 +170,6 @@ char	**ft_split_k_q_s(char const *s, char c)
 		i += (j - i);
 	}
 	dest[x] = 0;
+	main->split_len = x;
 	return (dest);
 }

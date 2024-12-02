@@ -72,7 +72,7 @@ int	ft_isdigit(int c);
 // MINISHELL
 /// Env
 int		init_env(char **env, t_main *main);
-int     check_syntax_env(char **split);
+int     check_syntax_env(t_main *main, char **split);
 void	print_env(t_main *main, int check, char **split);
 /// Unset
 void	unset(t_main *main, char *cmd);
@@ -86,6 +86,7 @@ void	fill_env_export(t_main *main, char *cmd);
 void	prep_export(t_main *main, char **split);
 void	print_ascii_order(t_main *main);
 void	prep_export(t_main *main, char **split);
+char	*get_var_name(char *cmd);
 /// Echo
 void	ft_echo(char **cmd);
 int		get_fd(char **cmd);
@@ -100,7 +101,7 @@ int		check_var_exists(char **env, int len, char *cmd);
 //Utils
 int		only_space_line(char *cmd);
 int     get_cmd_number(t_main *main, char **split);
-char	**ft_split_k_q_s(char const *s, char c);
+char	**ft_split_k_q_s(t_main *main, char const *s, char c);
 
 /// Tokens
 int		init_tokens(char **split, t_main *main);
@@ -115,7 +116,7 @@ char	**clean_split(t_main *main, char **split);
 int	    handle_sc(t_main *main, char **split, int i);
 
 //EXEC
-void	ft_exec(t_main *main, char **split, char *cmd);
+int	ft_exec(t_main *main, char **split, char *cmd);
 
 //PIPEX
 void	pipex(t_main *main, char **split);

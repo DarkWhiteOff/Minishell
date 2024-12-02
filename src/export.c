@@ -79,16 +79,27 @@ int	check_syntax_export(char *cmd)
 	arg = ft_strdup(&ft_strchr(cmd, ' ')[1]);
 	if (arg[0] == '_' && (arg[1] == '=' || arg[1] == '\0'))
 		return (free(arg), 0);
-	if (ft_isdigit(arg[0]) == 1 || arg[0] == '=')
-		return (printf("bash: export: '%c': not a valid identifier\n", arg[0]), free(arg), 0);
+	if (arg[0] == '\0' || arg[0] == '=' || ft_isdigit(arg[0]) == 1)
+		return (printf("bash: export: ‘%s’: not a valid identifier\n", arg), free(arg), 0);
+	if (arg[0] == '-')
+		return (printf("bash: export: -%c: invalid option\n", arg[1]), free(arg), 0);
+	while (arg[i])
+	{
+		if (arg[i] == '!' && arg[i + 1] != '=')
+			return (printf("bash: %s: event not found\n", ft_strchr(arg, '!')), free(arg), 0);
+		else if (arg[i] == '!')
+			return (printf("bash: export: ‘%s’: not a valid identifier\n", arg), free(arg), 0);
+		i++;
+	}
+	i = 0;
 	while (arg[i] != '=' && arg[i])
 	{
 		if (arg[i] == '%' || arg[i] == '?' || arg[i] == '@'
 			|| arg[i] == '\\' || arg[i] == '~' || arg[i] == '-'
 			|| arg[i] == '.' || arg[i] == '}' || arg[i] == '{'
-			|| arg[i] == '*' || arg[i] == '#' || arg[i] == '!'
+			|| arg[i] == '*' || arg[i] == '#'
 			|| (arg[i] == '+' && arg[i + 1] != '='))
-			return (printf("bash: export: '%c': not a valid identifier\n", arg[i]), free(arg), 0);
+			return (printf("bash: export: ‘%s’: not a valid identifier\n", arg), free(arg), 0);
 		i++;																																		
 	}
 	while (arg[i])
@@ -163,9 +174,12 @@ void	fill_export(t_main *main, char *cmd)
 	int		i;
 	int		replace_pos;
 	char	**tmp;
+	char *save_value;
+	char *temp;
 
 	i = 0;
 	replace_pos = check_var_exists(main->export, main->export_len, cmd);
+	printf("replace_pos : %d\n", replace_pos);
 	tmp = (char **)malloc(sizeof(char *) * main->export_len + 1);
 	while (i < main->export_len)
 	{
@@ -182,14 +196,32 @@ void	fill_export(t_main *main, char *cmd)
 	{
 		if (i == replace_pos)
 		{
-			main->export[i] = ft_strdup(&ft_strchr(cmd, ' ')[1]);
+			if (ft_strchr(cmd, '='))
+			{
+				save_value = ft_strjoin(ft_strjoin("\"", ft_strdup(&ft_strchr(cmd, '=')[1])), "\"");
+				temp = save_value;
+				save_value = ft_strjoin("export ", ft_strjoin(get_var_name(cmd), temp));
+				free(temp);
+				main->export[i] = save_value;
+			}
+			else
+				main->export[i] = ft_strdup(ft_strjoin("export ", &ft_strchr(cmd, ' ')[1]));
 			i++;
 		}
 		main->export[i] = ft_strdup(tmp[i]);
 		i++;
 		if (i == replace_pos)
 		{
-			main->export[i] = ft_strdup(&ft_strchr(cmd, ' ')[1]);
+			if (ft_strchr(cmd, '='))
+			{
+				save_value = ft_strjoin(ft_strjoin("\"", ft_strdup(&ft_strchr(cmd, '=')[1])), "\"");
+				temp = save_value;
+				save_value = ft_strjoin("export ", ft_strjoin(get_var_name(cmd), temp));
+				free(temp);
+				main->export[i] = save_value;
+			}
+			else
+				main->export[i] = ft_strdup(ft_strjoin("export ", &ft_strchr(cmd, ' ')[1]));
 			i++;
 		}
 	}
@@ -198,7 +230,16 @@ void	fill_export(t_main *main, char *cmd)
 	if (replace_pos == -1)
 	{
 		main->export[i] = main->export[i - 1];
-		main->export[i - 1] = ft_strdup(ft_strjoin(&ft_strchr(cmd, ' ')[1], "="));
+		if (ft_strchr(cmd, '='))
+		{
+			save_value = ft_strjoin(ft_strjoin("\"", ft_strdup(&ft_strchr(cmd, '=')[1])), "\"");
+			temp = save_value;
+			save_value = ft_strjoin("export ", ft_strjoin(get_var_name(cmd), temp));
+			free(temp);
+			main->export[i - 1] = save_value;
+		}
+		else
+			main->export[i - 1] = ft_strdup(ft_strjoin("export ", &ft_strchr(cmd, ' ')[1]));
 		main->export_len += 1;
 	}
 }
