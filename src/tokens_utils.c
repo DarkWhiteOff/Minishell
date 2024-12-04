@@ -147,7 +147,6 @@ int	handle_sc(t_main *main, char **split, int i)
 	}
 	return (0);
 }
-
 char	*ft_strendchr(char *s, char end)
 {
 	int		i;
