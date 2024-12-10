@@ -16,10 +16,9 @@ int    pwd(t_main *main, char **cmd)
         if (check_syntax_pwd(cmd[1]) == 0)
             return (0);
     }
-    pwd = ft_strdup(getcwd(NULL, 0));
+    pwd = getcwd(NULL, 0);
     if (pwd == NULL)
-        return (free(pwd), 0);
+        return (printf("pwd: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory\n"), 0);
     printf("%s\n", pwd);
-    free(pwd);
     return (1);
 }

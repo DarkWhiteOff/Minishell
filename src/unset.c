@@ -76,7 +76,7 @@ int	check_syntax_unset(char *cmd)
 		return (free(arg), 0);
 	if (arg[0] == '\0' || ft_isdigit(arg[0]) == 1)
 		return (printf("bash: unset: ‘%s’: not a valid identifier\n", arg), free(arg), 0);
-	if (arg[0] == '-')
+	if (arg[0] == '-' && arg[1])
 		return (printf("bash: unset: -%c: invalid option\n", arg[1]), free(arg), 0);
 	while (arg[i])
 	{
