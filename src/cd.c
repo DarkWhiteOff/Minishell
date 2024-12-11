@@ -137,21 +137,11 @@ int	cd(t_main *main, char **split)
 	int	chdir_value;
 	int	home_pos;
 
-	/* static int ok = 0;
-	if (ok == 1)
-	{
-		chdir_value = chdir("..");
-		char *pwd = getcwd(NULL, 0);
-		printf("pwd : %s\n", pwd);
-		printf("chdir_value : %d\n", chdir_value);
-		if (pwd == NULL)
-		{
-			printf("pwd: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory\n");
-			return (0);
-		}
-		exit(0);
-	}
-	ok++ */;
+	/* chdir_value = chdir("");
+	char *pwd = getcwd(NULL, 0);
+	printf("pwd : %s\n", pwd);
+	printf("chdir_value : %d\n", chdir_value);
+	exit(0); */
 	chdir_value = 0;
 	home_pos = 0;
 	if (getcwd(NULL, 0) == NULL)
