@@ -104,7 +104,10 @@ void	remake_env(char	**tmp, char	**env, int env_len, int replace_pos);
 int		only_space_line(char *cmd);
 int     get_cmd_number(t_main *main, char **split);
 char	**ft_split_k_q_s(t_main *main, char const *s, char c);
-int	closed_quotes(const char *s);
+int	closed_quotes(const char *s);	
+char        *get_rid_of_spaces(char const *s);
+char        *cut_str(char *str, char *cut);
+
 /// Tokens
 int		init_tokens(char **split, t_main *main);
 int		is_cmd(char *s, char *path);
@@ -112,7 +115,8 @@ int		is_sc(char *s);
 int		ft_findmltpchar(char *s1, char *s2);
 int		check_builtin(char *s);
 char	*get_rid_of_quotes(char *s);
-char	*replace_dollar(char *s, t_main *main);
+char        *get_rid_of(char *s, char c);
+
 /// Utils Tokens
 int		ft_quote(char **s, char **split);
 char	**clean_split(t_main *main, char **split);
@@ -120,7 +124,9 @@ int	    handle_sc(t_main *main, char **split, int i);
 //EXEC
 int	ft_exec(t_main *main, char **split, char *cmd);
 //PIPEX
-void	pipex(t_main *main, char **split);
+void    prep_cmd_pipex(t_main *main, char **split);
+void        pipex(t_main *main, char *split_pipex);
+
 // FREE
 void	free_all_data(t_main *main);
 void	free_env(char **tab, int tablen);

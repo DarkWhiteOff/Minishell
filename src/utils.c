@@ -16,12 +16,9 @@ int	sizeup_no_space(char const *s)
 {
 	int	i;
 	int	size;
-	char	quote;
 
 	i = 0;
 	size = 0;
-	if (!closed_quotes(s) || !s || s[0] == '\0')
-		return (-1);
 	while (ft_isspace(s[i]) == 1)
 			i++;
 	while (s[i])
@@ -35,44 +32,24 @@ int	sizeup_no_space(char const *s)
 		}
 		if (s[i] == 34 || s[i] == 39)
 		{
-			quote = s[i];
 			i++;
-			while (s[i] && s[i] != quote)
+			size++;
+			while (s[i] && (s[i] != 34 && s[i] != 39))
 			{
                 size++;
 				i++;
 			}
-			size += 2;
+			if (s[i] == 34 || s[i] == 39)
+				size++;
 		}
 		else
 			size++;
 		i++;
 	}
-	printf("size ns=%d\n", size);
 	return (size);
 }
 
-int	closed_quotes(const char *s)
-{
-	int		dquotes;
-	int		squotes;
-	int		i;
-
-	i = 0;
-	squotes = 0;
-	dquotes = 0;
-	while (s[i])
-	{
-		if (s[i] == 34)
-			squotes++;
-		else if (s[i] == 39)
-			dquotes++;
-		i++;
-	}
-	return ((dquotes % 2 == 0) && (squotes % 2 == 0));
-}
-
-char	*sizeup_k_q_s(char const *s)
+char	*get_rid_of_spaces(char const *s)
 {
 	int	i = 0;
 	int	j;
@@ -80,8 +57,6 @@ char	*sizeup_k_q_s(char const *s)
 	char *no_space;
 
 	size = sizeup_no_space(s);
-	if (size <= 0)
-		return (NULL);
 	no_space = malloc(sizeof(char) * size + 1);
 	i = 0;
 	j = 0;
@@ -163,8 +138,6 @@ int	count_words(char *no_space)
 	int i = 0;
 	int word=0;
 
-	if (no_space[0] != 0)
-		word = 1;
 	while (no_space[i])
 	{
 		if (ft_isspace(no_space[i]) == 1)
@@ -181,7 +154,6 @@ int	count_words(char *no_space)
 		}
 		i++;
 	}
-	printf("words=%d\n", word);
 	return (word);
 }
 
@@ -195,9 +167,7 @@ char	**ft_split_k_q_s(t_main *main, char const *s, char c)
 	i = 0;
 	x = 0;
 	j = 0;
-	char *no_space = sizeup_k_q_s(s);
-	if (!no_space)
-		return (NULL);
+	char *no_space = get_rid_of_spaces(s);
 	dest = malloc((count_words(no_space) + 1) * sizeof(char *));
 	if (dest == NULL || s == 0)
 		return (0);

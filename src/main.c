@@ -131,8 +131,8 @@ int	main(int argc, char **argv, char **env)
 			split = ft_split_k_q_s(&main, cmd, ' ');
 			if (init_tokens(split, &main) == 0)
 				return (free_all_data(&main), 1);
-			for(int i=0;split[i];i++)
-				printf("split : %s\n", split[i]);
+			//for(int i=0;split[i];i++)
+			//	printf("split : %s (token : %u)\n", split[i], main.tokens[i].type);
 			if (ft_exec(&main, split, cmd) == 0)
 				return (free_all_data(&main), 1);
 		}

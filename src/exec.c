@@ -12,27 +12,6 @@
 
 #include "../includes/minishell.h"
 
-char    *prep_cmd(char *cmd)
-{
-    int     i;
-    char    *res;
-
-    i = 0;
-    while (cmd[i] && cmd[i] != '|')
-        i++;
-    res = malloc(i * sizeof(char) + 1);
-    if (!res)
-        return (NULL);
-    i = 0;
-    while (cmd[i] && cmd[i] != '|')
-    {
-        res[i] = cmd[i];
-        i++;
-    }
-    res[i] = '\0';
-    return (res);
-}
-
 int    ft_exec(t_main *main, char **split, char *cmd)
 {
     //for (int i=0; split[i];i++)
@@ -59,12 +38,13 @@ int    ft_exec(t_main *main, char **split, char *cmd)
         {
             if(check_var_exists(main->env, main->env_len, "export PATH=") == -1)
                 return (printf("bash: %s: No such file or directory\n", split[0]), 1);
-            pipex(main, split);
+            prep_cmd_pipex(main, split);
         }
         main->nb_cmd--;
     }
     else if (cmd[0] != '\0')
         printf(GREY"minishell: %s: command not found\n"RESET, main->tokens[0].value);
      //printf("nb_cmd=%d\n", main->nb_cmd);
+     free_end_cmd(main, split);
      return (1);
 }
