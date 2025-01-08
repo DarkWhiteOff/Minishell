@@ -97,6 +97,8 @@ int	only_space_line(char *cmd)
 	int	i;
 
 	i = 0;
+	if (!cmd)
+		return (1);
 	while (cmd[i] && ft_isspace(cmd[i]))
 		i++;
 	if (i == (int)ft_strlen(cmd))
@@ -124,6 +126,7 @@ int	main(int argc, char **argv, char **env)
 		return (free_all_data(&main), 1);
 	while (1)
 	{
+		printf("cmd : %s\n", cmd);
 		cmd = readline(GREEN"minishell> "RESET);
 		if (only_space_line(cmd) == 0 && cmd)
 		{
@@ -136,6 +139,8 @@ int	main(int argc, char **argv, char **env)
 			if (ft_exec(&main, split, cmd) == 0)
 				return (free_all_data(&main), 1);
 		}
+		free(cmd);
+		cmd = NULL;
 	}
 	free_all_data(&main);
 	return (0);
