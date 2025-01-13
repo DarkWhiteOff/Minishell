@@ -205,7 +205,7 @@ void    ft_pipe2(t_main *main, char *split_pipex)
     ft_putendl_fd("lat cmd", 1);
     ft_putendl_fd(cmd[i], 1);
     ft_fork(main, cmd[i]);
-    close(filein);f
+    close(filein);
 }
 
 void    pipex(t_main *main, char *split)

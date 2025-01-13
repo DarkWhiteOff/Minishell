@@ -126,7 +126,6 @@ int	main(int argc, char **argv, char **env)
 		return (free_all_data(&main), 1);
 	while (1)
 	{
-		printf("cmd : %s\n", cmd);
 		cmd = readline(GREEN"minishell> "RESET);
 		if (only_space_line(cmd) == 0 && cmd)
 		{
@@ -134,8 +133,8 @@ int	main(int argc, char **argv, char **env)
 			split = ft_split_k_q_s(&main, cmd, ' ');
 			if (init_tokens(split, &main) == 0)
 				return (free_all_data(&main), 1);
-			//for(int i=0;split[i];i++)
-			//	printf("split : %s (token : %u)\n", split[i], main.tokens[i].type);
+			// for(int i=0;split[i];i++)
+			// 	printf("split : %s (token : %u)\n", split[i], main.tokens[i].type);
 			if (ft_exec(&main, split, cmd) == 0)
 				return (free_all_data(&main), 1);
 		}

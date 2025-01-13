@@ -12,6 +12,23 @@
 
 #include "../includes/minishell.h"
 
+void    builtin(t_main *main, char **split, char *cmd)
+{
+    (void)cmd;
+    if (ft_strcmp(main->tokens[0].value, "env") == 0 || ft_strcmp(main->tokens[0].value, "/bin/env") == 0)
+		print_env(main, 0, split);
+	if (ft_strcmp(main->tokens[0].value, "export") == 0)
+        prep_export(main, split);
+	if (ft_strcmp(main->tokens[0].value, "unset") == 0)
+        prep_unset(main, split);
+	if (ft_strcmp(main->tokens[0].value, "echo") == 0)
+		ft_echo(split);
+    if (ft_strcmp(main->tokens[0].value, "cd") == 0)
+        cd(main, split);
+    if (ft_strcmp(main->tokens[0].value, "pwd") == 0)
+        pwd(main, split);
+}
+
 int    ft_exec(t_main *main, char **split, char *cmd)
 {
     //for (int i=0; split[i];i++)
@@ -20,20 +37,7 @@ int    ft_exec(t_main *main, char **split, char *cmd)
     if (main->tokens[0].type == command)
     {
         if (check_builtin(main->tokens[0].value))
-        {
-            if (ft_strcmp(main->tokens[0].value, "env") == 0 || ft_strcmp(main->tokens[0].value, "/bin/env") == 0)
-			    print_env(main, 0, split);
-		    if (ft_strcmp(main->tokens[0].value, "export") == 0)
-                prep_export(main, split);
-		    if (ft_strcmp(main->tokens[0].value, "unset") == 0)
-                prep_unset(main, split);
-		    if (ft_strcmp(main->tokens[0].value, "echo") == 0)
-			    ft_echo(split);
-            if (ft_strcmp(main->tokens[0].value, "cd") == 0)
-                cd(main, split);
-            if (ft_strcmp(main->tokens[0].value, "pwd") == 0)
-                pwd(main, split);
-        }
+            builtin(main, split, cmd);
         else
         {
             if(check_var_exists(main->env, main->env_len, "export PATH=") == -1)

@@ -106,24 +106,23 @@ char	**ft_free_split_k_q_s(char **d, int start)
 int	ft_calc_k_q_s(int i, int diff, char _c, char const *_s)
 {
 	int	j;
-	int	quotes;
 
 	j = 0;
 	if (diff == 1)
 	{
 		while (_s[i] != _c && _s[i])
 		{
-			j = i;
-			if (_s[j] == 34 || _s[j] == 39)
+			j = i + 1;
+			if (_s[i] == 34 || _s[i] == 39)
 			{
-				quotes = 1;
-				while (_s[j] && quotes)
-					quotes = ft_strchr(&_s[++j], 34) || ft_strchr(&_s[++j], 39);
-				i = j - 1;
+				while (_s[j] != _s[i] && _s[j])
+					j++;
+				i = j + 1;
 			}
 			else
 				i++;
 		}
+		ft_putendl_fd((char *)&_s[i], 1);
 	}
 	else if (diff == 0)
 	{
