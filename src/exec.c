@@ -16,17 +16,17 @@ void    builtin(t_main *main, char **split, char *cmd)
 {
     (void)cmd;
     if (ft_strcmp(main->tokens[0].value, "env") == 0 || ft_strcmp(main->tokens[0].value, "/bin/env") == 0)
-		print_env(main, 0, split);
+		main->last_exit_code = print_env(main, 0, split);
 	if (ft_strcmp(main->tokens[0].value, "export") == 0)
-        prep_export(main, split);
+        main->last_exit_code = prep_export(main, split);
 	if (ft_strcmp(main->tokens[0].value, "unset") == 0)
-        prep_unset(main, split);
+        main->last_exit_code = prep_unset(main, split);
 	if (ft_strcmp(main->tokens[0].value, "echo") == 0)
-		ft_echo(split);
+		main->last_exit_code = ft_echo(main, split);
     if (ft_strcmp(main->tokens[0].value, "cd") == 0)
-        cd(main, split);
+        main->last_exit_code = cd(main, split);
     if (ft_strcmp(main->tokens[0].value, "pwd") == 0)
-        pwd(main, split);
+        main->last_exit_code = pwd(main, split);
 }
 
 int    ft_exec(t_main *main, char **split, char *cmd)
@@ -42,7 +42,7 @@ int    ft_exec(t_main *main, char **split, char *cmd)
         {
             if(check_var_exists(main->env, main->env_len, "export PATH=") == -1)
                 return (printf("bash: %s: No such file or directory\n", split[0]), 1);
-            prep_cmd_pipex(main, split);
+            main->last_exit_code = prep_cmd_pipex(main, split);
         }
         main->nb_cmd--;
     }

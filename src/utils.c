@@ -58,6 +58,8 @@ char	*get_rid_of_spaces(char const *s)
 
 	size = sizeup_no_space(s);
 	no_space = malloc(sizeof(char) * size + 1);
+	if (!no_space)
+		return (NULL);
 	i = 0;
 	j = 0;
 	while (ft_isspace(s[i]) == 1)
@@ -88,7 +90,6 @@ char	*get_rid_of_spaces(char const *s)
 		i++;
 	}
 	no_space[j] = '\0';
-	printf("no_space: %s|\n", no_space);
 	return (no_space);
 }
 
@@ -103,6 +104,22 @@ char	**ft_free_split_k_q_s(char **d, int start)
 	return (0);
 }
 
+int	check_quotes(char const *s, char q)
+{
+	int	i;
+	int	quotes;
+
+	quotes = 0;
+	i = 0;
+	while (s[i])
+	{
+		if (s[i] == q)
+			quotes++;
+		i++;
+	}
+	return (quotes % 2 == 0);
+}
+
 int	ft_calc_k_q_s(int i, int diff, char _c, char const *_s)
 {
 	int	j;
@@ -115,6 +132,8 @@ int	ft_calc_k_q_s(int i, int diff, char _c, char const *_s)
 			j = i + 1;
 			if (_s[i] == 34 || _s[i] == 39)
 			{
+				if (!check_quotes(&_s[i], _s[i]))
+					return (-1);
 				while (_s[j] != _s[i] && _s[j])
 					j++;
 				i = j + 1;
@@ -122,7 +141,6 @@ int	ft_calc_k_q_s(int i, int diff, char _c, char const *_s)
 			else
 				i++;
 		}
-		ft_putendl_fd((char *)&_s[i], 1);
 	}
 	else if (diff == 0)
 	{
@@ -153,7 +171,7 @@ int	count_words(char *no_space)
 		}
 		i++;
 	}
-	return (word);
+	return (word + 1);
 }
 
 char	**ft_split_k_q_s(t_main *main, char const *s, char c)
@@ -175,7 +193,7 @@ char	**ft_split_k_q_s(t_main *main, char const *s, char c)
 		i = ft_calc_k_q_s(i, 0, c, no_space);
 		j = ft_calc_k_q_s(i, 1, c, no_space);
 		dest[x] = get_rid_of_quotes(ft_substr(no_space, i, j - i));
-		if (dest[x] == NULL)
+		if (dest[x] == NULL || j < 0)
 			return (ft_free_split_k_q_s(dest, x));
 		x++;
 		i += (j - i);

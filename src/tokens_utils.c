@@ -20,6 +20,8 @@ char	*get_rid_of_quotes(char *s)
 
 	i = -1;
 	len = 0;
+	if (!s)
+		return (NULL);
 	while (s[++i])
 	{
 		if (s[i] != 34 && s[i] != 39)
@@ -177,6 +179,8 @@ char	*replace_dollar(char *s, t_main *main)
 			// printf("index=%d\n", l);
 			if (l >= 0)
 				res = ft_strjoin_free(res, &ft_strchr(main->env[l], '=')[1]);
+			else
+				res = ft_strjoin_free(res, &s[i + 1]);
 			free(tmp);
 			tmp = NULL;
 			// printf("res after $: %s\n" ,res);
@@ -206,4 +210,3 @@ int	handle_sc(t_main *main, char **split, int i)
 	}
 	return (0);
 }
-

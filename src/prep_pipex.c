@@ -12,7 +12,7 @@
 
 #include "../includes/minishell.h"
 
-void    prep_cmd_pipex(t_main *main, char **split)
+int prep_cmd_pipex(t_main *main, char **split)
 {
     int i;
     int k;
@@ -20,7 +20,7 @@ void    prep_cmd_pipex(t_main *main, char **split)
 
     i = 0;
     (void)split;
-    printf("split_len %d token_len %d\n", main->split_len, main->tokens_len);
+    // printf("split_len %d token_len %d\n", main->split_len, main->tokens_len);
     split_pipex = NULL;
     while (i <= main->tokens_len - 1)
     {
@@ -29,8 +29,10 @@ void    prep_cmd_pipex(t_main *main, char **split)
             i++;
         split_pipex = ft_strjoin_free(ft_strjoin_free(split_pipex, main->tokens[i].value), " ");
         i++;
-        while (main->tokens[i].type == 1 && i <= main->tokens_len - 1)
+        while (i <= main->tokens_len - 1)
         {
+            if (main->tokens[i].type != 1)
+                break ;
             split_pipex = ft_strjoin_free(ft_strjoin_free(split_pipex, main->tokens[i].value), " ");
             i++;
         }
@@ -55,9 +57,8 @@ void    prep_cmd_pipex(t_main *main, char **split)
         }
         i++;
     }
-    printf("split pipex : '%s'\n", split_pipex);
-    pipex(main, split_pipex);
-    return ;
+    // printf("split pipex : '%s'\n", split_pipex);
+    return (pipex(main, split_pipex), 1);
 }
 
 // < infile.txt cat -l -p  | grep "ok" > outfile.txt | < infile.txt cat -l -p  | grep "ok" > outfile.txt

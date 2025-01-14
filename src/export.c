@@ -12,7 +12,7 @@
 
 #include "../includes/minishell.h"
 
-void	remake_env(char	**tmp, char	**env, int env_len, int replace_pos)
+/* void	remake_env(char	**tmp, char	**env, int env_len, int replace_pos)
 {
 	int i;
 
@@ -32,39 +32,39 @@ void	remake_env(char	**tmp, char	**env, int env_len, int replace_pos)
 	return ;
 }
 
-/* void	fill_env(char **tmp, t_main *main, int replace_pos, int check)
-{
-	int i;
+// void	fill_env(char **tmp, t_main *main, int replace_pos, int check)
+// {
+// 	int i;
 
-	i = 0;
-	if (check == 1)
-	{
-		while (i < main->env_len)
-		{
-			if (i == replace_pos)
-				i++;
-			main->env[i] = ft_strdup(tmp[i]);
-			i++;
-			if (i == replace_pos)
-				i++;
-		}
-		main->env[i] = NULL;
-	}
-	else if (check == 2)
-	{
-		while (i < main->export_len)
-		{
-			if (i == replace_pos)
-				i++;
-			main->export[i] = ft_strdup(tmp[i]);
-			i++;
-			if (i == replace_pos)
-				i++;
-		}
-		main->export[i] = NULL;
-	}
-	return ;
-} */
+// 	i = 0;
+// 	if (check == 1)
+// 	{
+// 		while (i < main->env_len)
+// 		{
+// 			if (i == replace_pos)
+// 				i++;
+// 			main->env[i] = ft_strdup(tmp[i]);
+// 			i++;
+// 			if (i == replace_pos)
+// 				i++;
+// 		}
+// 		main->env[i] = NULL;
+// 	}
+// 	else if (check == 2)
+// 	{
+// 		while (i < main->export_len)
+// 		{
+// 			if (i == replace_pos)
+// 				i++;
+// 			main->export[i] = ft_strdup(tmp[i]);
+// 			i++;
+// 			if (i == replace_pos)
+// 				i++;
+// 		}
+// 		main->export[i] = NULL;
+// 	}
+// 	return ;
+// }
 
 char	*create_replace_pos(char *cmd)
 {
@@ -147,7 +147,130 @@ void	fill_export(t_main *main, char *cmd)
 		main->export[i - 1] = create_replace_pos(cmd);
 		main->export_len += 1;
 	}
-} // trop de ligne
+} // trop de ligne */
+
+void	fill_env_export(t_main *main, char *cmd)
+{
+	int		i;
+	int		replace_pos;
+	char	**tmp;
+
+	i = 0;
+	replace_pos = check_var_exists(main->env, main->env_len, cmd);
+	tmp = (char **)malloc(sizeof(char *) * main->env_len + 1);
+	while (i < main->env_len)
+	{
+		tmp[i] = ft_strdup(main->env[i]);
+		i++;
+	}
+	free_env(main->env, main->env_len);
+	if (replace_pos >= 0)
+		main->env = (char **)malloc(sizeof(char *) * ((main->env_len) + 1));
+	else
+		main->env = (char **)malloc(sizeof(char *) * ((main->env_len + 1) + 1));
+	i = 0;
+	while (i < main->env_len)
+	{
+		if (i == replace_pos)
+		{
+			main->env[i] = ft_strdup(&ft_strchr(cmd, ' ')[1]);
+			i++;
+		}
+		main->env[i] = ft_strdup(tmp[i]);
+		i++;
+		if (i == replace_pos)
+		{
+			main->env[i] = ft_strdup(&ft_strchr(cmd, ' ')[1]);
+			i++;
+		}
+	}
+	main->env[i] = NULL;
+	free_env(tmp, main->env_len);
+	if (replace_pos == -1)
+	{
+		main->env[i] = main->env[i - 1];
+		main->env[i - 1] = ft_strdup(&ft_strchr(cmd, ' ')[1]);
+		main->env_len += 1;
+	}
+	fill_export(main, cmd);
+}
+
+void	fill_export(t_main *main, char *cmd)
+{
+	int		i;
+	int		replace_pos;
+	char	**tmp;
+	char *save_value;
+	char *temp;
+
+	i = 0;
+	replace_pos = check_var_exists(main->export, main->export_len, cmd);
+	printf("replace_pos : %d\n", replace_pos);
+	tmp = (char **)malloc(sizeof(char *) * main->export_len + 1);
+	while (i < main->export_len)
+	{
+		tmp[i] = ft_strdup(main->export[i]);
+		i++;
+	}
+	free_env(main->export, main->export_len);
+	if (replace_pos >= 0)
+		main->export = (char **)malloc(sizeof(char *) * ((main->export_len) + 1));
+	else
+		main->export = (char **)malloc(sizeof(char *) * ((main->export_len + 1) + 1));
+	i = 0;
+	while (i < main->export_len)
+	{
+		if (i == replace_pos)
+		{
+			if (ft_strchr(cmd, '='))
+			{
+				save_value = ft_strjoin(ft_strjoin("\"", ft_strdup(&ft_strchr(cmd, '=')[1])), "\"");
+				temp = save_value;
+				save_value = ft_strjoin("export ", ft_strjoin(get_var_name(cmd), temp));
+				free(temp);
+				main->export[i] = save_value;
+			}
+			else
+				main->export[i] = ft_strdup(ft_strjoin("export ", &ft_strchr(cmd, ' ')[1]));
+			i++;
+		}
+		main->export[i] = ft_strdup(tmp[i]);
+		i++;
+		if (i == replace_pos)
+		{
+			if (ft_strchr(cmd, '='))
+			{
+				save_value = ft_strjoin(ft_strjoin("\"", ft_strdup(&ft_strchr(cmd, '=')[1])), "\"");
+				temp = save_value;
+				save_value = ft_strjoin("export ", ft_strjoin(get_var_name(cmd), temp));
+				free(temp);
+				main->export[i] = save_value;
+			}
+			else
+				main->export[i] = ft_strdup(ft_strjoin("export ", &ft_strchr(cmd, ' ')[1]));
+			i++;
+		}
+	}
+	main->export[i] = NULL;
+	free_env(tmp, main->export_len);
+	if (replace_pos == -1)
+	{
+		main->export[i] = main->export[i - 1];
+		if (ft_strchr(cmd, '='))
+		{
+			save_value = ft_strjoin(ft_strjoin("\"", ft_strdup(&ft_strchr(cmd, '=')[1])), "\"");
+			temp = save_value;
+			save_value = ft_strjoin("export ", ft_strjoin(get_var_name(cmd), temp));
+			free(temp);
+			main->export[i - 1] = save_value;
+		}
+		else
+			main->export[i - 1] = ft_strdup(ft_strjoin("export ", &ft_strchr(cmd, ' ')[1]));
+		main->export_len += 1;
+	}
+}
+
+//////////////////////////////////////////////////////////////////////////////////
 
 int	check_ko_export(char *arg)
 {

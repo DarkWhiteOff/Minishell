@@ -116,7 +116,6 @@ int	main(int argc, char **argv, char **env)
 
 	(void)argc;
 	(void)argv;
-	(void)cmd;
 	init_main(&main);
 	if (init_env(env, &main) == 0)
 		return (free_all_data(&main), 1);
@@ -124,7 +123,9 @@ int	main(int argc, char **argv, char **env)
 		main.path = env[check_var_exists(main.env, main.env_len, "export PATH=")];
 	else
 		return (free_all_data(&main), 1);
-	while (1)
+	signal(SIGINT, signal_manager);
+	
+	while (1) //ft_strcmp(cmd, "exit") != 0
 	{
 		cmd = readline(GREEN"minishell> "RESET);
 		if (only_space_line(cmd) == 0 && cmd)
@@ -137,10 +138,10 @@ int	main(int argc, char **argv, char **env)
 			// 	printf("split : %s (token : %u)\n", split[i], main.tokens[i].type);
 			if (ft_exec(&main, split, cmd) == 0)
 				return (free_all_data(&main), 1);
+			//printf("exit code %d\n", main.last_exit_code);
 		}
-		free(cmd);
-		cmd = NULL;
 	}
 	free_all_data(&main);
+	rl_clear_history();
 	return (0);
 }
