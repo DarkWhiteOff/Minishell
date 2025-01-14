@@ -12,6 +12,8 @@
 
 #include "../includes/minishell.h"
 
+
+// BROUILLON :
 /* void	remake_env(char	**tmp, char	**env, int env_len, int replace_pos)
 {
 	int i;
@@ -149,6 +151,7 @@ void	fill_export(t_main *main, char *cmd)
 	}
 } // trop de ligne */
 
+// CODE :
 void	fill_env_export(t_main *main, char *cmd)
 {
 	int		i;
@@ -193,7 +196,7 @@ void	fill_env_export(t_main *main, char *cmd)
 		main->env_len += 1;
 	}
 	fill_export(main, cmd);
-}
+} // trop de ligne
 
 void	fill_export(t_main *main, char *cmd)
 {
@@ -268,9 +271,7 @@ void	fill_export(t_main *main, char *cmd)
 			main->export[i - 1] = ft_strdup(ft_strjoin("export ", &ft_strchr(cmd, ' ')[1]));
 		main->export_len += 1;
 	}
-}
-
-//////////////////////////////////////////////////////////////////////////////////
+} // trop de ligne
 
 int	check_ko_export(char *arg)
 {
@@ -400,7 +401,7 @@ void	export(t_main *main, char *cmd)
 	return ;
 }
 
-void	prep_export(t_main *main, char **split)
+int	prep_export(t_main *main, char **split)
 {
 	int i;
 	char *tmp;
@@ -409,7 +410,7 @@ void	prep_export(t_main *main, char **split)
 	if (ft_strcmp(split[0], "export") == 0 && split[1] == NULL)
 	{
 		print_env(main, 1, split);
-		return ;
+		return (0);
 	}
 	while (split[i] && is_sc(split[i]) != 1)
 	{
@@ -419,5 +420,5 @@ void	prep_export(t_main *main, char **split)
 		free(tmp);
 		i++;
 	}
-	return ;
+	return (0);
 }

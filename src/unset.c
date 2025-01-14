@@ -12,6 +12,49 @@
 
 #include "../includes/minishell.h"
 
+// BROUILLON :
+/* int	unset_env(char **env, int env_len, char *cmd)
+{
+	int		i;
+	int		j;
+	int		var_to_unset;
+	char	**tmp;
+
+	i = 0;
+	j = 0;
+	var_to_unset = check_var_exists(env, env_len, cmd);
+	if (var_to_unset == -1)
+		return (0);
+	tmp = (char **)malloc(sizeof(char *) * (env_len + 1));
+	remake_env(tmp, env, env_len, -2);
+	while (i < env_len)
+	{
+		if (i == var_to_unset)
+			i++;
+		env[j] = ft_strdup(tmp[i]);
+		i++;
+		j++;
+		if (i == var_to_unset)
+			i++;
+	}
+	env[j] = NULL;
+	free_env(tmp, env_len);
+	return (1) ;
+}
+
+void	unset(t_main *main, char *cmd)
+{
+	if (check_syntax_unset(cmd) == 0)
+		return ;
+	if (unset_env(main->env, main->env_len, cmd) == 1)
+		main->env_len -= 1;
+	if (unset_env(main->export, main->export_len, cmd) == 1)
+		main->export_len -= 1;
+	printf("Env Len : %d | Export Len : %d\n", main->env_len, main->export_len);
+	return ;
+} */
+
+// CODE :
 int	check_var_exists(char **env, int len, char *cmd)
 {
 	int		i;
@@ -72,35 +115,6 @@ int	check_var_exists2(t_main *main, char *arg)
 	}
 	return (-1);
 }
-
-/* int	unset_env(char **env, int env_len, char *cmd)
-{
-	int		i;
-	int		j;
-	int		var_to_unset;
-	char	**tmp;
-
-	i = 0;
-	j = 0;
-	var_to_unset = check_var_exists(env, env_len, cmd);
-	if (var_to_unset == -1)
-		return (0);
-	tmp = (char **)malloc(sizeof(char *) * (env_len + 1));
-	remake_env(tmp, env, env_len, -2);
-	while (i < env_len)
-	{
-		if (i == var_to_unset)
-			i++;
-		env[j] = ft_strdup(tmp[i]);
-		i++;
-		j++;
-		if (i == var_to_unset)
-			i++;
-	}
-	env[j] = NULL;
-	free_env(tmp, env_len);
-	return (1) ;
-} */
 
 void	unset_env(t_main *main, char *cmd)
 {
@@ -206,18 +220,6 @@ int	check_syntax_unset(char *cmd)
 	return (1);
 } // trop de lignes
 
-/* void	unset(t_main *main, char *cmd)
-{
-	if (check_syntax_unset(cmd) == 0)
-		return ;
-	if (unset_env(main->env, main->env_len, cmd) == 1)
-		main->env_len -= 1;
-	if (unset_env(main->export, main->export_len, cmd) == 1)
-		main->export_len -= 1;
-	printf("Env Len : %d | Export Len : %d\n", main->env_len, main->export_len);
-	return ;
-} */
-
 void	unset(t_main *main, char *cmd)
 {
 	if (check_syntax_unset(cmd) == 0)
@@ -228,7 +230,7 @@ void	unset(t_main *main, char *cmd)
 	return ;
 }
 
-void	prep_unset(t_main *main, char **split)
+int	prep_unset(t_main *main, char **split)
 {
 	int i;
 	char *tmp;
@@ -236,11 +238,10 @@ void	prep_unset(t_main *main, char **split)
 	i = 1;
 	while (split[i] && is_sc(split[i]) != 1)
 	{
-		printf("split : '%s'\n", split[i]); //
 		tmp = ft_strjoin("unset ", split[i]);
 		unset(main, tmp);
 		free(tmp);
 		i++;	
 	}
-	return ;
+	return (0);
 }

@@ -1,15 +1,28 @@
 #include "../includes/minishell.h"
 
-void    signal_manager(int sig)
+void    sigint(int sig)
 {
     (void)sig;
     printf("\n");
+    rl_on_new_line();
+    rl_replace_line("", 0);
+    rl_redisplay();
+    return ;
+}
+
+void    sigquit(int sig)
+{
+    (void)sig;
+    rl_on_new_line();
+    rl_replace_line("", 0);
+    rl_redisplay();
+    printf("\033[K\b");
     return ;
 }
 
 void signals()
 {
-    signal(SIGINT, signal_manager);
-    //signal(SIG, signal_manager);
+    signal(SIGINT, sigint);
+    signal(SIGQUIT, sigquit);
     return ;
 }

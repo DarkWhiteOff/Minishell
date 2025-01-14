@@ -137,7 +137,8 @@ void    free_end_cmd(t_main *main, char **split);
 void    free_split(char **split);
 
 // SIGNALS
-void    signal_manager(int signal);
+void    sigint(int sig);
+void    sigquit(int sig);
 void signals();
 
 
