@@ -33,6 +33,10 @@
 # define GREY 	"\033[0;90m"
 # define RESET	"\033[0m"
 
+# ifndef BUFFER_SIZE
+#  define BUFFER_SIZE 1024
+# endif
+
 enum e_type {command, argument, sc, end};
 
 typedef struct token_t
@@ -54,9 +58,12 @@ typedef struct s_main {
     int     last_exit_code;
 }	t_main;
 
+//GNL
+char	*get_next_line(int fd);
 
 // LIBFT
 size_t	ft_atoi(const char *str);
+void	*ft_calloc(size_t nmemb, size_t size);
 int		ft_isspace(int c);
 char	**ft_split(char const *s, char c);
 char	*ft_strdup(const char *s);
@@ -75,74 +82,78 @@ int	    ft_isdigit(int c);
 void	ft_putnbr_fd(int n, int fd);
 
 // MINISHELL
-/// Env
+/// ENV
 int		init_env(char **env, t_main *main);
-int     check_syntax_env(t_main *main, char **split);
-int	print_env(t_main *main, int check, char **split);
-/// Unset
+int     check_syntax_env(char **split);
+int	    print_env(t_main *main, int check, char **split);
+/// UNSET
+void	unset_env(t_main *main, char *cmd);
+void	unset_export(t_main *main, char *cmd);
 void	unset(t_main *main, char *cmd);
 int		check_syntax_unset(char *cmd);
 int	    prep_unset(t_main *main, char **split);
-/// Export
+/// EXPORT
 void    export(t_main *main, char *cmd);
 int		check_syntax_export(char *cmd);
 void	fill_export(t_main *main, char *cmd);
 void	fill_env_export(t_main *main, char *cmd);
 void	print_ascii_order(t_main *main);
-int	prep_export(t_main *main, char **split);
+int	    prep_export(t_main *main, char **split);
 char	*get_var_name(char *cmd);
-/// Echo
+/// ECHO
 int     ft_echo(t_main *main, char **cmd);
-int		get_fd(char **cmd);
-// Cd
+int		get_fd_in(char **cmd);
+int		get_fd_out(char **cmd);
+/// CD
 void	update_oldpwd_pwd(t_main *main);
 int		cd(t_main *main, char **cmd);
-// Pwd
+/// PWD
 int		pwd(t_main *main, char **cmd);
-/// Utils BuiltIns
+/// UTILS BUILTINS
 int		check_var_exists(char **env, int len, char *cmd);
-void	remake_env(char	**tmp, char	**env, int env_len, int replace_pos);
-//Utils
+void	remake_env(char	**tmp, t_main *main, int which, int replace_pos);
+/// UTILS
 int		only_space_line(char *cmd);
 int     get_cmd_number(t_main *main, char **split);
 char	**ft_split_k_q_s(t_main *main, char const *s, char c);
-int	closed_quotes(const char *s);	
-char        *get_rid_of_spaces(char const *s);
-char        *cut_str(char *str, char *cut);
+int	    closed_quotes(const char *s);	
+char    *get_rid_of_spaces(char const *s);
+char    *cut_str(char *str, char *cut);
 
-/// Tokens
+/// TOKENS
 int		init_tokens(char **split, t_main *main);
 int		is_cmd(char *s, char *path);
 int		is_sc(char *s);
 int		ft_findmltpchar(char *s1, char *s2);
 int		check_builtin(char *s);
 char	*get_rid_of_quotes(char *s);
-char        *get_rid_of(char *s, char c);
+char     *get_rid_of(char *s, char c);
 
-/// Utils Tokens
+/// UTILS TOKENS
 int		ft_quote(char **s, char **split);
 char	**clean_split(t_main *main, char **split);
 int	    handle_sc(t_main *main, char **split, int i);
-//EXEC
-int	ft_exec(t_main *main, char **split, char *cmd);
-//PIPEX
-int    prep_cmd_pipex(t_main *main, char **split);
-int        pipex(t_main *main, char *split_pipex);
+/// EXEC
+int	    ft_exec(t_main *main, char **split, char *cmd);
+/// PIPEX
+int     prep_cmd_pipex(t_main *main, char **split);
+int     pipex(t_main *main, char *split_pipex);
 
-// FREE
+/// FREE
 void	free_all_data(t_main *main);
 void	free_env(char **tab, int tablen);
 void	free_tokens(t_main *main);
 void    free_end_cmd(t_main *main, char **split);
 void    free_split(char **split);
 
-// SIGNALS
+/// SIGNALS
 void    sigint(int sig);
 void    sigquit(int sig);
-void signals();
+void    init_signals();
 
-
+/// OTHERS
 char	*ft_strendchr(char *s, char end);
 int	    check_var_exists2(t_main *main, char *arg);
 char	*ft_strchrb(const char *s, int c);
+char	*get_var_name(char *cmd);
 #endif

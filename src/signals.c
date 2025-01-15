@@ -16,11 +16,11 @@ void    sigquit(int sig)
     rl_on_new_line();
     rl_replace_line("", 0);
     rl_redisplay();
-    printf("\033[K\b");
+    printf("\033[K");
     return ;
 }
 
-void signals()
+void init_signals()
 {
     signal(SIGINT, sigint);
     signal(SIGQUIT, sigquit);

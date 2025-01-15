@@ -58,7 +58,7 @@ int prep_cmd_pipex(t_main *main, char **split)
         i++;
     }
     // printf("split pipex : '%s'\n", split_pipex);
-    return (pipex(main, split_pipex), 1);
+    return(pipex(main, split_pipex));
 }
 
 // < infile.txt cat -l -p  | grep "ok" > outfile.txt | < infile.txt cat -l -p  | grep "ok" > outfile.txt

@@ -34,7 +34,7 @@ void	print_ascii_order(t_main *main)
 	char	**sort_env;
 
 	i = 0;
-	sort_env = (char **)malloc(sizeof(char *) * main->export_len + 1);
+	sort_env = (char **)malloc(sizeof(char *) * (main->export_len + 1));
 	while (i < main->export_len)
 	{
 		sort_env[i] = ft_strdup(main->export[i]);
@@ -64,7 +64,7 @@ void	print_ascii_order(t_main *main)
 	free_env(sort_env, main->export_len);
 }
 
-int	check_syntax_env(t_main *main, char **split)
+int	check_syntax_env(char **split)
 {
 	int i;
 
@@ -73,7 +73,7 @@ int	check_syntax_env(t_main *main, char **split)
 		return (1);
 	if (ft_strcmp(split[0], "env") == 0 && split[1] != NULL)
 	{
-		while (i < main->split_len)
+		while (split[i])
 		{
 			if (ft_strcmp(split[i], "env") == 0)
 				i++;
@@ -91,7 +91,7 @@ int	print_env(t_main *main, int check, char **split)
 	i = 0;
 	if (check == 0)
 	{
-		if (check_syntax_env(main, split) == 0)
+		if (check_syntax_env(split) == 0)
 			return (1);
 		while (i < main->env_len)
 		{

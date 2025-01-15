@@ -11,6 +11,7 @@
 # **************************************************************************** #
 
 SRC =	ft_atoi.c \
+	ft_calloc.c	\
 	ft_isspace.c \
 	ft_split.c \
 	ft_strjoin.c \
@@ -28,11 +29,13 @@ SRC =	ft_atoi.c \
 	ft_putnbr_fd.c
 
 BFILES =	ft_atoi.o \
+		ft_calloc.o	\
 		ft_isspace.o \
 		ft_split.o \
 		ft_strjoin.o \
 		ft_strdup.o \
 		ft_strncmp.o \
+		ft_strcmp.o \
 		ft_strchr.o \
 		ft_substr.o \
 		ft_strlen.o \

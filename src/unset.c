@@ -12,49 +12,6 @@
 
 #include "../includes/minishell.h"
 
-// BROUILLON :
-/* int	unset_env(char **env, int env_len, char *cmd)
-{
-	int		i;
-	int		j;
-	int		var_to_unset;
-	char	**tmp;
-
-	i = 0;
-	j = 0;
-	var_to_unset = check_var_exists(env, env_len, cmd);
-	if (var_to_unset == -1)
-		return (0);
-	tmp = (char **)malloc(sizeof(char *) * (env_len + 1));
-	remake_env(tmp, env, env_len, -2);
-	while (i < env_len)
-	{
-		if (i == var_to_unset)
-			i++;
-		env[j] = ft_strdup(tmp[i]);
-		i++;
-		j++;
-		if (i == var_to_unset)
-			i++;
-	}
-	env[j] = NULL;
-	free_env(tmp, env_len);
-	return (1) ;
-}
-
-void	unset(t_main *main, char *cmd)
-{
-	if (check_syntax_unset(cmd) == 0)
-		return ;
-	if (unset_env(main->env, main->env_len, cmd) == 1)
-		main->env_len -= 1;
-	if (unset_env(main->export, main->export_len, cmd) == 1)
-		main->export_len -= 1;
-	printf("Env Len : %d | Export Len : %d\n", main->env_len, main->export_len);
-	return ;
-} */
-
-// CODE :
 int	check_var_exists(char **env, int len, char *cmd)
 {
 	int		i;
@@ -90,7 +47,7 @@ int	check_var_exists(char **env, int len, char *cmd)
 	}
 	free(arg);
 	return (-1);
-}
+} // trop de lignes
 
 int	check_var_exists2(t_main *main, char *arg)
 {
@@ -100,7 +57,7 @@ int	check_var_exists2(t_main *main, char *arg)
 
 	i = 0;
 	j = 0;
-	while (i < main->env_len)
+	while (main->env[i])
 	{
 		actual_var = ft_strdup(main->env[i]);
 		while (actual_var[j] != '=')
@@ -129,13 +86,7 @@ void	unset_env(t_main *main, char *cmd)
 	if (var_to_unset == -1)
 		return ;
 	tmp = (char **)malloc(sizeof(char *) * (main->env_len + 1));
-	while (i < main->env_len)
-	{
-		tmp[i] = ft_strdup(main->env[i]);
-		i++;
-	}
-	free_env(main->env, main->env_len);
-	main->env = (char **)malloc(sizeof(char *) * ((main->env_len - 1) + 1));
+	remake_env(tmp, main, 0, -2);
 	i = 0;
 	while (i < main->env_len)
 	{
@@ -150,8 +101,7 @@ void	unset_env(t_main *main, char *cmd)
 	main->env[j] = NULL;
 	free_env(tmp, main->env_len);
 	main->env_len -= 1;
-	return ;
-}
+} // trop de lignes
 
 void	unset_export(t_main *main, char *cmd)
 {
@@ -166,13 +116,7 @@ void	unset_export(t_main *main, char *cmd)
 	if (var_to_unset == -1)
 		return ;
 	tmp = (char **)malloc(sizeof(char *) * (main->export_len + 1));
-	while (i < main->export_len)
-	{
-		tmp[i] = ft_strdup(main->export[i]);
-		i++;
-	}
-	free_env(main->export, main->export_len);
-	main->export = (char **)malloc(sizeof(char *) * ((main->export_len - 1) + 1));
+	remake_env(tmp, main, 1, -2);
 	i = 0;
 	while (i < main->export_len)
 	{
@@ -187,8 +131,7 @@ void	unset_export(t_main *main, char *cmd)
 	main->export[j] = NULL;
 	free_env(tmp, main->export_len);
 	main->export_len -= 1;
-	return ;
-}
+} // trop de lignes
 
 int	check_syntax_unset(char *cmd)
 {

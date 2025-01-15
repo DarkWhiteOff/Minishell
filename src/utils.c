@@ -14,14 +14,14 @@
 
 int	sizeup_no_space(char const *s)
 {
-	int	i;
-	int	size;
+	size_t	i;
+	int		size;
 
 	i = 0;
 	size = 0;
 	while (ft_isspace(s[i]) == 1)
 			i++;
-	while (s[i])
+	while (i < ft_strlen(s))
 	{
 		if (ft_isspace(s[i]) == 1)
 		{
