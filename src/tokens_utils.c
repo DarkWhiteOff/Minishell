@@ -113,6 +113,8 @@ int	is_cmd(char *s, char *path)
 	char	**split;
 
 	i = 0;
+	if (!ft_strncmp(s, "./", 2))
+		return (1);
 	s1 = ft_strjoin("/", s);
 	split = ft_split(path, ':');
 	if (check_builtin(s))
