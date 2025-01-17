@@ -12,7 +12,7 @@
 
 #include "../includes/minishell.h"
 
-int	handle_opening_outfile(char *file, int append)
+int	handle_opening_outfile(char *file, int append) // trop de lignes
 {
 	int	fd;
 
@@ -63,7 +63,7 @@ int	handle_opening_infile(char *file, int append)
 	return (fd);
 }
 
-int	get_fd_out(char **cmd)
+int	get_fd_out(char **cmd) // trop de lignes
 {
 	int	i;
 	int	fd;
@@ -111,31 +111,31 @@ int	get_fd_in(char **cmd)
 	return (1);
 }
 
-int get_cmd_number(t_main *main, char **split)
+int	get_cmd_number(t_main *main, char **split)
 {
-    int i;
-    int j;
-    int cmd;
+	int	i;
+	int	j;
+	int	cmd;
 
-    cmd = 0;
-    i = 0;
-    while (split[i])
-    {
-        if (is_cmd(split[i], main->path))
-        {
-            cmd++;
-            j = i + 1;
-            while (split[j])
-            {
-                if (ft_strcmp(split[j], "|") == 0)
-                    break ;
-                if (main->tokens[j].type == command)
-                    main->tokens[j].type = argument;
-                j++;
-            }
-            i += (j - i - 1);
-        }
-        i++;
-    }
-    return (cmd);
+	cmd = 0;
+	i = 0;
+	while (split[i])
+	{
+		if (is_cmd(split[i], main->path))
+		{
+			cmd++;
+			j = i + 1;
+			while (split[j])
+			{
+				if (ft_strcmp(split[j], "|") == 0)
+					break ;
+				if (main->tokens[j].type == command)
+					main->tokens[j].type = argument;
+				j++;
+			}
+			i += (j - i - 1);
+		}
+		i++;
+	}
+	return (cmd);
 }

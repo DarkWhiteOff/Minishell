@@ -105,11 +105,16 @@ void	fill_env_export(t_main *main, char *cmd);
 void	print_ascii_order(t_main *main);
 int	    prep_export(t_main *main, char **split);
 char	*get_var_name(char *cmd);
+int     check_plus(char *cmd);
+char    *get_without_plus(char *cmd);
+char    *get_plus_str(t_main *main, char *cmd);
 /// ECHO
 int     ft_echo(t_main *main, char **cmd);
 int		get_fd_in(char **cmd);
 int		get_fd_out(char **cmd);
 /// CD
+int	is_special_case(char *actual_arg);
+char	*get_actual_arg(t_main *main, char *arg);
 void	update_oldpwd_pwd(t_main *main);
 int		cd(t_main *main, char **cmd);
 /// PWD

@@ -1,112 +1,22 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   export.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: zamgar <marvin@42.fr>                      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/11/18 15:08:43 by zamgar            #+#    #+#             */
+/*   Updated: 2024/11/18 15:08:45 by zamgar           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../includes/minishell.h"
-
-int	actual_arg_size(char *arg)
-{
-	int	i;
-
-	i = 0;
-	if (arg[i] == '/')
-	{
-		while (arg[i])
-			i++;
-	}
-	else
-	{
-		while (arg[i] != '/' && arg[i])
-			i++;
-	}
-	return (i);
-}
-
-void	fill_actual_arg(char *actual_arg, char *arg)
-{
-	int i;
-
-	i = 0;
-	if (arg[i] == '/')
-	{
-		while (arg[i])
-		{
-			actual_arg[i] = arg[i];
-			i++;
-		}
-	}
-	else
-	{
-		while (arg[i] != '/' && arg[i])
-		{
-			actual_arg[i] = arg[i];
-			i++;
-		}
-	}
-	actual_arg[i] = '\0';
-}
-
-void	*handle_home_case(t_main *main, char *actual_arg)
-{
-	int home_pos;
-
-	if (ft_strcmp(actual_arg, "--") == 0)
-	{
-		free(actual_arg);
-		actual_arg = NULL;
-		home_pos = check_var_exists(main->env, main->env_len, "export HOME=");
-		if (home_pos == -1)
-		{
-			printf("bash: cd: HOME not set\n");
-			return (NULL);
-		}
-		actual_arg = ft_strdup(&ft_strchr(main->env[home_pos], '=')[1]);
-	}
-	else if (ft_strcmp(actual_arg, "~") == 0 || ft_strcmp(actual_arg, "~/") == 0)
-	{
-		free(actual_arg);
-		actual_arg = NULL;
-		actual_arg = ft_strdup("/home/zamgar");
-	}
-	return ("not null");
-}
-
-char *get_actual_arg(t_main *main, char *arg)
-{
-	int 	i;
-	char 	*actual_arg;
-	int		oldpwd_pos;
-
-	i = 0;
-	actual_arg = (char *)malloc(sizeof(char) * (actual_arg_size(arg) + 1));
-	fill_actual_arg(actual_arg, arg);
-	if (ft_strcmp(actual_arg, "-") == 0)
-	{
-		free(actual_arg);
-		actual_arg = NULL;
-		oldpwd_pos = check_var_exists(main->env, main->env_len, "export OLDPWD=");
-		actual_arg = ft_strdup(&ft_strchr(main->env[oldpwd_pos], '=')[1]);
-		printf("%s\n", actual_arg);
-	}
-	if (handle_home_case(main, actual_arg) == NULL)
-		return (NULL);
-	return (actual_arg);
-}
-
-int	is_special_case(char *actual_arg)
-{
-	if (ft_strcmp(actual_arg, "-") == 0)
-		return (1);
-	if (actual_arg[0] == '/')
-		return (1);
-	if (ft_strcmp(actual_arg, "--") == 0)
-		return (1);
-	if (ft_strcmp(actual_arg, "~") == 0 || ft_strcmp(actual_arg, "~/") == 0)
-		return (1);
-	return (0);
-}
 
 int	return_to_pwd(t_main *main)
 {
-	int pwd_pos;
-	int chdir_value;
-	char *pwd_value;
+	int		pwd_pos;
+	int		chdir_value;
+	char	*pwd_value;
 
 	pwd_pos = check_var_exists(main->env, main->env_len, "export PWD=");
 	pwd_value = &ft_strchr(main->env[pwd_pos], '=')[1];
@@ -116,17 +26,17 @@ int	return_to_pwd(t_main *main)
 	return (1);
 }
 
-int	check_syntax_cd(t_main *main, char *arg)
+int	check_syntax_cd(t_main *main, char *arg) // trop de lignes
 {
-	int i;
-	int chdir_value;
-	char *actual_arg;
-	int special_case;
+	int		i;
+	int		chdir_value;
+	char	*actual_arg;
+	int		special_case;
 
 	i = 0;
 	chdir_value = 0;
 	if (arg[0] == '-' && arg[1] && ft_strcmp(arg, "--") != 0)
-	 	return (printf("bash: cd: -%c: invalid option\n", arg[1]), free(arg), 0);
+		return (printf("bash: cd: -%c: invalid option\n", arg[1]), free(arg), 0);
 	while (arg[i])
 	{
 		actual_arg = get_actual_arg(main, &arg[i]);
@@ -139,7 +49,8 @@ int	check_syntax_cd(t_main *main, char *arg)
 			if (return_to_pwd(main) == 0)
 				return (0);
 			//if ((ft_strcmp(main->env[pwd_pos], "PWD=/") == 0) && (ft_strcmp(actual_arg, "..") != 0))
-			return (printf("bash: cd: %s: No such file or directory\n", actual_arg), 0);
+			return (printf("bash: cd: %s: No such file or directory\n"
+					, actual_arg), 0);
 		}
 		if (special_case == 1)
 			return (1);
@@ -150,7 +61,7 @@ int	check_syntax_cd(t_main *main, char *arg)
 			i++;
 	}
 	return (1);
-} // trop de lignes
+}
 
 void	update_oldpwd_pwd(t_main *main)
 {
@@ -162,14 +73,13 @@ void	update_oldpwd_pwd(t_main *main)
 	pwd = ft_strdup(&ft_strchr(main->env[pwd_line], '=')[1]);
 	export(main, ft_strjoin("export OLDPWD=", pwd));
 	free(pwd);
-
 	newpwd = ft_strdup(getcwd(NULL, 0));
 	export(main, ft_strjoin("export PWD=", newpwd));
 	free(newpwd);
 	return ;
 }
 
-int print_home_pwd(t_main *main)
+int	print_home_pwd(t_main *main)
 {
 	int	chdir_value;
 	int	home_pos;
