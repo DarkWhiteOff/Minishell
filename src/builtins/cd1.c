@@ -82,11 +82,9 @@ void	*handle_home_case(t_main *main, char *actual_arg)
 
 char	*get_actual_arg(t_main *main, char *arg)
 {
-	int		i;
 	char	*actual_arg;
 	int		oldpwd_pos;
 
-	i = 0;
 	actual_arg = (char *)malloc(sizeof(char) * (actual_arg_size(arg) + 1));
 	fill_actual_arg(actual_arg, arg);
 	if (ft_strcmp(actual_arg, "-") == 0)

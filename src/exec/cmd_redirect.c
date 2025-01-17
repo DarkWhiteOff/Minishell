@@ -12,7 +12,7 @@
 
 #include "../includes/minishell.h"
 
-int	handle_opening_outfile(char *file, int append) // trop de lignes
+int	handle_opening_outfile(char *file, int append)
 {
 	int	fd;
 
@@ -23,10 +23,7 @@ int	handle_opening_outfile(char *file, int append) // trop de lignes
 		if (fd < 0)
 			return (-1);
 		if (access(file, W_OK) != 0)
-		{
-			close(fd);
-			return (-1);
-		}
+			return (close(fd), -1);
 	}
 	else
 	{
@@ -63,14 +60,14 @@ int	handle_opening_infile(char *file, int append)
 	return (fd);
 }
 
-int	get_fd_out(char **cmd) // trop de lignes
+int	get_fd_out(char **cmd)
 {
 	int	i;
 	int	fd;
 
 	i = 0;
 	fd = -1;
-	while (cmd[i] && ft_strcmp(cmd[i], "|") != 0)
+	while (cmd[i++] && ft_strcmp(cmd[i], "|") != 0)
 	{
 		if (ft_strcmp(cmd[i], ">>") == 0)
 		{
@@ -86,7 +83,6 @@ int	get_fd_out(char **cmd) // trop de lignes
 			else
 				return (-1);
 		}
-		i++;
 	}
 	if (fd > 0)
 		return (fd);
