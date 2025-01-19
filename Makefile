@@ -44,6 +44,9 @@ $(NAME): $(LIBFT_LIB) $(OBJS)
 	@echo "$(NAME): $(GREEN)$(NAME) compiled.$(RESET)"
 	@echo ".o files in directory 'objs'"
 
+valgrind:
+	valgrind --leak-check=full ./minishell
+
 clean:
 	make clean -sC $(LIBFT_PATH)
 	rm -rf objs
@@ -54,4 +57,4 @@ fclean: clean
 
 re: fclean all
 
-.PHONY: all clean fclean re
+.PHONY: all valgrind clean fclean re

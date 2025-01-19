@@ -122,5 +122,5 @@ char	**ft_split_k_q_s(t_main *main, char const *s, char c) // trop de lignes
 	}
 	dest[x] = 0;
 	main->split_len = x;
-	return (dest);
+	return (free(no_space), dest);
 }

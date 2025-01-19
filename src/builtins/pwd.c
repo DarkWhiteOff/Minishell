@@ -30,7 +30,7 @@ int	pwd(t_main *main, char **cmd)
 	}
 	pwd = getcwd(NULL, 0);
 	if (pwd == NULL)
-		return (printf("pwd: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory\n"), 0);
+		return (free(pwd), printf("pwd: error retrieving current directory: getcwd: cannot access parent directories: No such file or directory\n"), 0);
 	printf("%s\n", pwd);
-	return (1);
+	return (free(pwd), 1);
 }
