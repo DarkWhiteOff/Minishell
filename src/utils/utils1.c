@@ -20,7 +20,7 @@ int	sizeup_no_space(char const *s) // trop de lignes
 	i = 0;
 	size = 0;
 	while (ft_isspace(s[i]) == 1)
-			i++;
+		i++;
 	while (i < ft_strlen(s))
 	{
 		if (ft_isspace(s[i]) == 1)
@@ -64,7 +64,7 @@ char	*get_rid_of_spaces(char const *s) // trop de lignes
 	i = 0;
 	j = 0;
 	while (ft_isspace(s[i]) == 1)
-			i++;
+		i++;
 	while (j < size)
 	{
 		if (ft_isspace(s[i]) == 1)

@@ -57,6 +57,11 @@ typedef struct s_main {
     char	*path;
     int     hc_pos;
     int     last_exit_code;
+    char *cmd;
+    int infile;
+    int outfile;
+    int *pip;
+    char **split;
 }	t_main;
 
 //GNL
@@ -116,10 +121,11 @@ int		get_fd_out(char **cmd);
 /// CD
 int	is_special_case(char *actual_arg);
 char	*get_actual_arg(t_main *main, char *arg);
-void	update_oldpwd_pwd(t_main *main);
 int		cd(t_main *main, char **cmd);
 /// PWD
-int		pwd(t_main *main, char **cmd);
+int     return_to_pwd(t_main *main);
+void    update_oldpwd_pwd(t_main *main);
+int     pwd(t_main *main, char **cmd);
 /// UTILS BUILTINS
 int     basic_verif(char *arg, int which);
 int		check_var_exists(char **env, int len, char *cmd);

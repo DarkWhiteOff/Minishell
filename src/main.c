@@ -24,6 +24,10 @@ void	init_main(t_main *main)
 	main->nb_cmd = 0;
 	main->hc_pos = -1;
 	main->path = NULL;
+	main->cmd = NULL;
+	main->infile = -1;
+	main->outfile = -1;
+	main->pip = NULL;
 }
 
 char	*get_var_name(char *cmd)
@@ -108,12 +112,13 @@ int	only_space_line(char *cmd)
 int	main(int argc, char **argv, char **env)
 {
 	static t_main	main;
-	char	*cmd;
+	//char	*cmd;
 	char	**split;
+	static int i;
 
 	(void)argc;
 	(void)argv;
-	cmd = NULL;
+	main.cmd = NULL;
 	init_main(&main);
 	if (init_env(env, &main) == 0)
 		return (free_all_data(&main), 1);
@@ -122,24 +127,25 @@ int	main(int argc, char **argv, char **env)
 	else
 		return (free_all_data(&main), 1);
 	init_signals();
-	while (ft_strcmp(cmd, "exit") != 0)
+	while (ft_strcmp(main.cmd, "exit") != 0)
 	{
-		cmd = readline(GREEN"minishell> "RESET);
-		if (cmd == NULL)
+		main.cmd = readline(GREEN"minishell> "RESET);
+		if (main.cmd == NULL)
 		{
 			printf("exit\n");
 			break ;
 		}
-		else if (only_space_line(cmd) == 0 && cmd)
+		else if (only_space_line(main.cmd) == 0 && main.cmd)
 		{
-			add_history(cmd);
-			split = ft_split_k_q_s(&main, cmd, ' ');
+			add_history(main.cmd);
+			split = ft_split_k_q_s(&main, main.cmd, ' ');
 			if (init_tokens(split, &main) == 0)
 				break ;
-			if (ft_process(&main, split, cmd) == 0)
+			if (ft_process(&main, split, main.cmd) == 0)
 				break ;
 			free_end_cmd(&main, split);
 		}
+		i++;
 	}
 	free_all_data(&main);
 	rl_clear_history();

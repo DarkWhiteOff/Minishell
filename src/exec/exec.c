@@ -24,7 +24,8 @@ int	builtin(t_main *main, char **split, char *cmd)
 		return (prep_unset(main, split));
 	if (ft_strcmp(main->tokens[0].value, "echo") == 0)
 		return (ft_echo(main, split));
-	if (ft_strcmp(main->tokens[0].value, "cd") == 0)
+	if (ft_strcmp(main->tokens[0].value, "cd") == 0
+		|| ft_strcmp(main->tokens[0].value, "/bin/cd") == 0)
 		return (cd(main, split));
 	if (ft_strcmp(main->tokens[0].value, "pwd") == 0)
 		return (pwd(main, split));
@@ -42,10 +43,8 @@ int	ft_process(t_main *main, char **split, char *cmd)
 			main->last_exit_code = builtin(main, split, cmd);
 		else
 		{
-			if (check_var_exists(main->env, main->env_len, "export PATH=")
-				== -1)
-				return (printf("minishell: %s: No such file or directory\n", split[0])
-					, 1);
+			if (check_var_exists(main->env, main->env_len, "export PATH=") == -1)
+				return (printf("minishell: %s: No such file or directory\n", split[0]), 1);
 			main->last_exit_code = prep_cmd_exec(main);
 		}
 		main->nb_cmd = 0;

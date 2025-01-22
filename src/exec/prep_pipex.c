@@ -12,7 +12,6 @@
 
 #include "../includes/minishell.h"
 
-// < test.txt grep ligne | cat > outfile.txt
 int	prep_cmd_exec(t_main *main)
 {
 	int		i;
@@ -48,6 +47,7 @@ int	prep_cmd_exec(t_main *main)
 	res[k] = NULL;
 	// for (int l=0;l<main->nb_cmd;l++)
 	// 	printf("prep cmd res: %s\n", res[l]);
+	main->split = res;
 	return (launch_process(main, res));
 }
 /*

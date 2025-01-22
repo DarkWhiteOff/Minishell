@@ -23,7 +23,10 @@ int	handle_opening_outfile(char *file, int append)
 		if (fd < 0)
 			return (-1);
 		if (access(file, W_OK) != 0)
-			return (close(fd), -1);
+		{
+			close(fd);
+			return (-1);
+		}
 	}
 	else
 	{
@@ -67,7 +70,7 @@ int	get_fd_out(char **cmd)
 
 	i = 0;
 	fd = -1;
-	while (cmd[i++] && ft_strcmp(cmd[i], "|") != 0)
+	while (cmd[i] && ft_strcmp(cmd[i], "|") != 0)
 	{
 		if (ft_strcmp(cmd[i], ">>") == 0)
 		{
@@ -83,6 +86,7 @@ int	get_fd_out(char **cmd)
 			else
 				return (-1);
 		}
+		i++;
 	}
 	if (fd > 0)
 		return (fd);
@@ -104,7 +108,7 @@ int	get_fd_in(char **cmd)
 		}
 		i++;
 	}
-	return (1);
+	return (0);
 }
 
 int	get_cmd_number(t_main *main, char **split)
