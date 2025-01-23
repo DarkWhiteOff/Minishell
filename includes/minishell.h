@@ -57,11 +57,12 @@ typedef struct s_main {
     char	*path;
     int     hc_pos;
     int     last_exit_code;
-    char *cmd;
-    int infile;
-    int outfile;
-    int *pip;
-    char **split;
+    char    *cmd;
+    int     infile;
+    int     outfile;
+    int     pip[2];
+    char    **split;
+    char    **base_split;
 }	t_main;
 
 //GNL
@@ -86,6 +87,7 @@ void	ft_putstr_fd(char *s, int fd);
 void	ft_putchar_fd(char c, int fd);
 int	    ft_isdigit(int c);
 void	ft_putnbr_fd(int n, int fd);
+char    *ft_itoa(int n);
 
 // MINISHELL
 
@@ -152,17 +154,17 @@ int		ft_quote(char **s, char **split);
 char	**clean_split(t_main *main, char **split);
 int	    handle_sc(t_main *main, char **split, int i);
 /// EXEC
-int	    ft_process(t_main *main, char **split, char *cmd);
+int	    ft_process(t_main *main, char *cmd);
 int	    builtin(t_main *main, char **split, char *cmd);
 /// PIPEX
-int     prep_cmd_exec(t_main *main);
-int     launch_process(t_main *main, char **processes);
+char    **prep_cmd_exec(t_main *main);
+int     launch_process(t_main *main);
 
 /// FREE
 void	free_all_data(t_main *main);
 void	free_env(char **tab, int tablen);
 void	free_tokens(t_main *main);
-void    free_end_cmd(t_main *main, char **split);
+void    free_end_cmd(t_main *main);
 void    free_split(char **split);
 
 /// SIGNALS

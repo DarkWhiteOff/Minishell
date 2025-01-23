@@ -27,7 +27,8 @@ void	init_main(t_main *main)
 	main->cmd = NULL;
 	main->infile = -1;
 	main->outfile = -1;
-	main->pip = NULL;
+	main->pip[0] = -1;
+	main->pip[1] = -1;
 }
 
 char	*get_var_name(char *cmd)
@@ -112,8 +113,6 @@ int	only_space_line(char *cmd)
 int	main(int argc, char **argv, char **env)
 {
 	static t_main	main;
-	//char	*cmd;
-	char	**split;
 	static int i;
 
 	(void)argc;
@@ -138,12 +137,12 @@ int	main(int argc, char **argv, char **env)
 		else if (only_space_line(main.cmd) == 0 && main.cmd)
 		{
 			add_history(main.cmd);
-			split = ft_split_k_q_s(&main, main.cmd, ' ');
-			if (init_tokens(split, &main) == 0)
+			main.base_split = ft_split_k_q_s(&main, main.cmd, ' ');
+			if (init_tokens(main.base_split, &main) == 0)
 				break ;
-			if (ft_process(&main, split, main.cmd) == 0)
+			if (ft_process(&main, main.cmd) == 0)
 				break ;
-			free_end_cmd(&main, split);
+			free_end_cmd(&main);
 		}
 		i++;
 	}

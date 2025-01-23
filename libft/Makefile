@@ -26,7 +26,8 @@ SRC =	ft_atoi.c \
 	ft_putchar_fd.c \
 	ft_isdigit.c \
 	ft_strrchr.c \
-	ft_putnbr_fd.c
+	ft_putnbr_fd.c \
+	ft_itoa.c
 
 BFILES =	ft_atoi.o \
 		ft_calloc.o	\
@@ -44,7 +45,8 @@ BFILES =	ft_atoi.o \
 		ft_putchar_fd.o \
 		ft_isdigit.o \
 		ft_strrchr.o \
-		ft_putnbr_fd.o
+		ft_putnbr_fd.o \
+		ft_itoa.o
 
 OBJS = ${SRC:.c=.o}
 

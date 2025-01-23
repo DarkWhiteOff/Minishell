@@ -12,9 +12,15 @@
 
 #include "../includes/minishell.h"
 
-void	free_end_cmd(t_main *main, char **split)
+void	free_end_cmd(t_main *main)
 {
-	free_split(split);
+	if (main->infile > 0)
+		close(main->infile);
+	main->infile = -1;
+	if (main->outfile > 0)
+		close(main->outfile);
+	main->outfile = -1;
+	free_split(main->split);
 	if (main->tokens)
 		free_tokens(main);
 }
