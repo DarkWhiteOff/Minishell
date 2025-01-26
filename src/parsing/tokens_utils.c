@@ -12,6 +12,28 @@
 
 #include "../includes/minishell.h"
 
+char	*cut_str(char *str, char *cut)
+{
+	int		i;
+	unsigned char *s;
+
+	i = 0;
+	s = (unsigned char *)str;
+	if (!cut || !str)
+		return (str);
+	while (s[i])
+	{
+		if (ft_strcmp((char *)(s + i), cut) == 0)
+		{
+			s[i] = '\0';
+			i--;
+			return ((char *)s);
+		}
+		i++;
+	}
+	return (NULL);
+}
+
 // char	*replace_dollar(char *s, t_main *main)
 // {
 // 	int		i;

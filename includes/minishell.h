@@ -39,6 +39,8 @@
 
 enum e_type {command, argument, sc};
 
+// extern pid_t	g_signal_pid;
+
 typedef struct token_t
 {
 	enum e_type	type;
@@ -65,9 +67,6 @@ typedef struct s_main {
     char    **base_split;
 }	t_main;
 
-//GNL
-char	*get_next_line(int fd);
-
 // LIBFT
 size_t	ft_atoi(const char *str);
 void	*ft_calloc(size_t nmemb, size_t size);
@@ -82,6 +81,7 @@ int		ft_strcmp(const char *s1, const char *s2);
 char	*ft_strchr(const char *s, int c);
 char	*ft_strrchr(const char *s, int c);
 char	*ft_substr(char const *str, unsigned int start, size_t len);
+char	*ft_strnstr(const char *big, const char *little, size_t len);
 void	ft_putendl_fd(char *s, int fd);
 void	ft_putstr_fd(char *s, int fd);
 void	ft_putchar_fd(char c, int fd);
@@ -136,8 +136,9 @@ void	remake_env(char	**tmp, t_main *main, int which, int replace_pos);
 int		only_space_line(char *cmd);
 int     get_cmd_number(t_main *main, char **split);
 char	**ft_split_k_q_s(t_main *main, char const *s, char c);
-int	    closed_quotes(const char *s);	
+int	    closed_quotes(const char *s);
 char    *get_rid_of_spaces(char const *s);
+char	*order(char *s);
 char    *cut_str(char *str, char *cut);
 
 /// TOKENS
@@ -162,6 +163,7 @@ int     launch_process(t_main *main);
 
 /// FREE
 void	free_all_data(t_main *main);
+void	free_process(t_main *main, int exit_code);
 void	free_env(char **tab, int tablen);
 void	free_tokens(t_main *main);
 void    free_end_cmd(t_main *main);

@@ -12,6 +12,13 @@
 
 #include "../includes/minishell.h"
 
+void	free_process(t_main *main, int exit_code)
+{
+	free_end_cmd(main);
+	free_all_data(main);
+	exit (exit_code);
+}
+
 void	free_end_cmd(t_main *main)
 {
 	if (main->infile > 0)
@@ -23,6 +30,8 @@ void	free_end_cmd(t_main *main)
 	free_split(main->split);
 	if (main->tokens)
 		free_tokens(main);
+	free_split(main->base_split);
+	free(main->cmd);
 }
 
 void	free_split(char **split)

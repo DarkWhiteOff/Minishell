@@ -39,9 +39,9 @@ static void	wait_all(t_main *main)
 	int		status;
 	int		pid;
 	int		len;
-	char	**tmp;
+	// char	**tmp;
 
-	tmp = main->split;
+	// tmp = main->split;
 	len = main->nb_cmd;
 	while (len--)
 	{
@@ -69,19 +69,44 @@ static void	redirect_in_out(t_main *main, char **cmd, int *pip)
 	if (main->outfile >= 0)
 	{
 		dup2(main->outfile, 1);
-		close(main->outfile);
+		//close(main->outfile);
 	}
-	else if (*(cmd + 1) != NULL)
+	if (*(cmd + 1) != NULL)
 		dup2(pip[1], 1);
 	close(pip[1]);
+}
+
+void	child_builtin(t_main *main, char **cmd, int *pip)
+{
+	int	exit_code;
+
+	redirect_in_out(main, cmd, pip);
+	rl_clear_history();
+	init_signals();
+	exit_code = builtin(main, cmd, cmd[0]);
+	free_process(main, exit_code);
 }
 
 void	child_process(t_main *main, char **cmd, int *pip)
 {
 	char	**path;
-	char *ok;
+	char 	*ok;
 
-	ok = prep_process(*(cmd));
+	main->outfile = get_fd_out(cmd);
+	ok = prep_process(*cmd);
+	path = ft_split(ok, ' ');
+	free(ok);
+	if (!is_cmd(path[0], main->path))
+	{
+		free_split(path);
+		free_process(main, 2);
+	}
+	if (check_builtin(path[0]))
+		child_builtin(main, path, pip);
+	free_split(path);
+	if (ft_strrchr(*cmd, '>'))
+		cut_str(*cmd, ft_strrchr(*cmd, '>'));
+	ok = prep_process(*cmd);
 	path = ft_split(ok, ' ');
 	free(ok);
 	ok = ft_strjoin("/usr/bin/", path[0]);
@@ -89,9 +114,8 @@ void	child_process(t_main *main, char **cmd, int *pip)
 	rl_clear_history();
 	init_signals();
 	execve(ok, path, main->env);
-	free_all_data(main);
 	perror("ERROR CHILD");
-	exit(0);
+	free_process(main, 1);
 }
 
 static void	parent_process(t_main *main, char **cmd, int *pip)

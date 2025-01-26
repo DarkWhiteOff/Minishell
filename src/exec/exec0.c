@@ -23,12 +23,16 @@ char	**prep_cmd_exec(t_main *main)
 	res = malloc((main->nb_cmd + 1) * sizeof(char *));
 	i = 0;
 	k = 0;
-	while (i < main->tokens_len)
+	while (i < main->tokens_len && main->nb_cmd > 0)
 	{
 		j = i;
 		tmp = NULL;
-		while (main->tokens[j].type != command && j <= main->tokens_len)
+		while (j < main->tokens_len)
+		{
+			if (main->tokens[j].type == command)
+				break ;
 			j++;
+		}
 		while (i < main->tokens_len)
 		{
 			if (!ft_strcmp(main->tokens[i].value, "|"))
@@ -41,12 +45,9 @@ char	**prep_cmd_exec(t_main *main)
 			i++;
 		}
 		res[k++] = ft_strjoin_free(main->tokens[j].value, tmp, 1);
-		// printf("token j: %s\n", main->tokens[j].value);
 		i++;
 	}
 	res[k] = NULL;
-	// for (int l=0;l<main->nb_cmd;l++)
-	// 	printf("prep cmd res: %s\n", res[l]);
 	return (res);
 }
 /*
