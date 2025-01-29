@@ -105,6 +105,8 @@ int	is_cmd(char *s, char *path)
 	split = ft_split(path, ':');
 	if (check_builtin(s))
 		return (free_split(split), free(s1), 1);
+	if (ft_strcmp(s, "\0") == 0)
+		return (0);
 	while (split[i])
 	{
 		tmp = ft_strjoin(split[i], s1);

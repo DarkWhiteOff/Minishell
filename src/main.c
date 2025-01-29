@@ -147,9 +147,12 @@ int	main(int argc, char **argv, char **env)
 			add_history(cmd);
 			free(cmd);
 			main.base_split = ft_split_k_q_s(&main, main.cmd, ' ');
-			if (init_tokens(main.base_split, &main) == 0)
-				break ;
-			ft_process(&main, main.cmd);
+			if (main.base_split)
+			{
+				if (init_tokens(main.base_split, &main) == 0)
+					break ;
+				ft_process(&main, main.cmd);
+			}
 			free_end_cmd(&main);
 		}
 		cat = 0;

@@ -157,6 +157,7 @@ int		ft_findmltpchar(char *s1, char *s2);
 int		check_builtin(char *s);
 char	*get_rid_of_quotes(char *s);
 char     *get_rid_of(char *s, char c);
+char	*replace_dollar(char *arg, t_main *main);
 
 /// UTILS TOKENS
 int		ft_quote(char **s, char **split);

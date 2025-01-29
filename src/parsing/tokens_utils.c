@@ -145,7 +145,7 @@ char	*replace_dollar(char *arg, t_main *main)
 		if (j > 0)
 		{
 			tmp = ft_substr(arg_dup, i, j - i);
-			//printf("tmp_debut : %s\n", tmp);
+			printf("tmp_debut : %s\n", tmp);
 		}
 		i = j + 1;
 		while (arg_dup[i] != '$' && arg_dup[i] != '?' && arg_dup[i] != '=' && arg_dup[i])
@@ -156,7 +156,7 @@ char	*replace_dollar(char *arg, t_main *main)
 				i++;
 			end = i;
 			tmp3 = ft_substr(arg_dup, i, ft_strlen(arg_dup) - i);
-			//printf("tmp3_end : %s\n", tmp3);
+			printf("tmp3_end : %s\n", tmp3);
 		}
 		else
 			end = ft_strlen(arg_dup);
@@ -203,9 +203,6 @@ char	*replace_dollar(char *arg, t_main *main)
 		}
 	}
 	free(arg_dup);
-	// printf("exit\n");
-	// exit(0);
-	//printf("final_tmp : %s\n", final_tmp);
 	return (final_tmp);
 }
 
