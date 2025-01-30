@@ -71,8 +71,9 @@ typedef struct s_main {
     int     pip[2];
     char    **split;
     char    **base_split;
-    int dquotes;
-    int squotes;
+    int     ok[42];
+    int     s_qts;
+    int     s_qts_index;
 }	t_main;
 
 // LIBFT

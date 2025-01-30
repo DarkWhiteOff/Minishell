@@ -32,6 +32,8 @@ void	init_main(t_main *main)
 	main->pip[1] = -1;
 	main->split = NULL;
 	main->base_split = NULL;
+	main->s_qts = 0;
+	main->s_qts_index = 0;
 }
 
 char	*get_var_name(char *cmd)

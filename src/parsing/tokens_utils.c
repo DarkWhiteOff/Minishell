@@ -79,17 +79,38 @@ char	*cut_str(char *str, char *cut)
 // 	return (res);
 // }
 
-void	replace(t_main *main, char **tmp2, int rep_pos)
+void	replace(t_main *main, char **tmp2, int rep_pos, int r)
 {
 	//printf("rep_pos : %d\n", rep_pos);
 	if (ft_strcmp (*tmp2, "$") == 0)
 		return ;
 	if (rep_pos >= 0)
+	{
+		// while (main->ok[r] != -1)
+		// {
+		// 	main->ok[r] : ft_strlen(&ft_strchr(main->env[rep_pos], '=')[1]);
+		// 	r++;
+		// }
 		*tmp2 = ft_strdup(&ft_strchr(main->env[rep_pos], '=')[1]);
+	}
 	else if (rep_pos == -1)
+	{
+		while (main->ok[r] != -1)
+		{
+			main->ok[r] -= ft_strlen(*(tmp2));
+			r++;
+		}
 		*tmp2 = ft_strdup("");
+	}
 	else if (rep_pos == -2)
+	{
+		// while (main->ok[r] != -1)
+		// {
+		// 	main->ok[r] : ft_strlen(ft_itoa(main->last_exit_code)) ;
+		// 	r++;
+		// }
 		*tmp2 = ft_strdup(ft_itoa(main->last_exit_code));
+	}
 }
 
 char	*attach_tmps(char *tmp, char *replaced_tmp2, char *tmp3)
@@ -135,25 +156,42 @@ char	*replace_dollar(char *arg, t_main *main)
 	i = 0;
 	j = 0;
 	end = 0;
+	int r = 0;
 	arg_dup = ft_strdup(arg);
 	(void) main;
 	while (arg_dup[i])
 	{
 		printf("arg_dup : %s\n", arg_dup);
 		while (arg_dup[j] != '$' && arg_dup[j])
+		{
+			if (j == main->ok[r])
+			{
+				printf("j : %d\n", j);
+				j++;
+				while (arg_dup[j] != '\'')
+					j++;
+				printf("j : %d\n", j);
+				r++;
+			}
 			j++;
+		}
 		if (j > 0)
 		{
 			tmp = ft_substr(arg_dup, i, j - i);
 			printf("tmp_debut : %s\n", tmp);
 		}
-		i = j + 1;
-		while (arg_dup[i] != '$' && arg_dup[i] != '?' && arg_dup[i] != '=' && arg_dup[i])
+		i = j;
+		if (arg_dup[i] == '$')
+			i += 1;
+		while (arg_dup[i] != '$' && arg_dup[i] != '?' && arg_dup[i] != '=' && arg_dup[i] != '"' && arg_dup[i] != '\'' && arg_dup[i])
 			i++;
-		if (arg_dup[i] == '$' || arg_dup[i] == '?' || arg_dup[i] == '=')
+		if (arg_dup[i] == '$' || arg_dup[i] == '?' || arg_dup[i] == '=' || arg_dup[i] == '"' || arg_dup[i] == '\'')
 		{
-			if (arg_dup[i] == '?')
+			if (arg_dup[i] == '?' && arg_dup[i - 1] == '$')
+			{
+				printf("ouais\n");
 				i++;
+			}
 			end = i;
 			tmp3 = ft_substr(arg_dup, i, ft_strlen(arg_dup) - i);
 			printf("tmp3_end : %s\n", tmp3);
@@ -163,7 +201,7 @@ char	*replace_dollar(char *arg, t_main *main)
 		tmp2 = ft_substr(arg_dup, j, end - j);
 		printf("tmp2_dollar : %s\n", tmp2);
 		int rep_pos = check_var_exists2(main, &tmp2[1]);
-		replace(main, &tmp2, rep_pos);
+		replace(main, &tmp2, rep_pos, r);
 		printf("\n");
 		printf("tmp_debut : %s\n", tmp);
 		printf("tmp2_dollar replaced : %s\n", tmp2);
@@ -200,6 +238,7 @@ char	*replace_dollar(char *arg, t_main *main)
 			i = 0;
 			j = 0;
 			end = 0;
+			r = 0;
 		}
 	}
 	free(arg_dup);
