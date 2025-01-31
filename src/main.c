@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 15:12:34 by zamgar            #+#    #+#             */
-/*   Updated: 2024/11/19 16:33:45 by marvin           ###   ########.fr       */
+/*   Updated: 2025/01/31 02:43:35 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,8 +32,6 @@ void	init_main(t_main *main)
 	main->pip[1] = -1;
 	main->split = NULL;
 	main->base_split = NULL;
-	main->s_qts = 0;
-	main->s_qts_index = 0;
 }
 
 char	*get_var_name(char *cmd)
@@ -143,9 +141,11 @@ int	main(int argc, char **argv, char **env)
 		}
 		if (only_space_line(cmd) == 0 && cmd)
 		{
-			char *tmp = order(cmd);
-			main.cmd = get_rid_of_spaces(tmp);
-			free(tmp);
+			//char *tmp = order(cmd);
+			//main.cmd = get_rid_of_spaces(tmp);
+			main.cmd = get_rid_of_spaces(cmd);
+			printf("cmd : <%s> | main.cmd : <%s>\n", cmd, main.cmd);
+			//free(tmp);
 			add_history(cmd);
 			free(cmd);
 			main.base_split = ft_split_k_q_s(&main, main.cmd, ' ');

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zamgar <zamgar@student.42.fr>              +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/07 13:54:25 by zamgar            #+#    #+#             */
-/*   Updated: 2025/01/28 17:18:37 by zamgar           ###   ########.fr       */
+/*   Updated: 2025/01/30 18:59:28 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,9 +71,8 @@ typedef struct s_main {
     int     pip[2];
     char    **split;
     char    **base_split;
-    int     ok[42];
-    int     s_qts;
-    int     s_qts_index;
+    int     s_qs[42];
+    int     d_qs[42];
 }	t_main;
 
 // LIBFT

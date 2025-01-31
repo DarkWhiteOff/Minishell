@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tzizi <tzizi@student.42.fr>                +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/26 16:51:15 by tzizi             #+#    #+#             */
-/*   Updated: 2025/01/23 12:28:53 by tzizi            ###   ########.fr       */
+/*   Updated: 2025/01/31 03:23:09 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,22 +22,6 @@ char	**ft_free_split_k_q_s(char **d, int start)
 	}
 	free(d);
 	return (0);
-}
-
-int	check_quotes(char const *s, char q)
-{
-	int	i;
-	int	quotes;
-
-	quotes = 0;
-	i = 0;
-	while (s[i])
-	{
-		if (s[i] == q)
-			quotes++;
-		i++;
-	}
-	return (quotes % 2 == 0);
 }
 
 int	ft_calc_k_q_s(int i, int diff, char _c, char const *_s) // trop de lignes
@@ -75,8 +59,6 @@ int	count_words(char *no_space)
 
 	i = 0;
 	word = 0;
-	// if (!check_quotes(no_space, 34) || !check_quotes(no_space, 39))
-	// 	return (-1);
 	while (no_space[i])
 	{
 		if (ft_isspace(no_space[i]) == 1)
@@ -102,7 +84,9 @@ int	check_open_quotes(char const *s, t_main *main)
 	int s_qts;
 	int d_qts;
 	int tmp = 0;
+	int tmp2 = 0;
 	int r = 0;
+	int r1 = 0;
 
 	i = 0;
 	s_qts = 0;
@@ -122,6 +106,7 @@ int	check_open_quotes(char const *s, t_main *main)
 			{
 				//printf("d_qts on 1 -> s[i] : %c | i : %d\n", s[i], i);
 				d_qts = 1;
+				tmp2 = i;
 				i++;
 			}
 		}
@@ -133,7 +118,7 @@ int	check_open_quotes(char const *s, t_main *main)
 			{
 				//printf("s_qts on 0 -> s[i] : %c | i : %d\n", s[i], i);
 				s_qts = 0;
-				main->ok[r++] = tmp;
+				main->s_qs[r++] = tmp;
 				i++;
 			}
 		}
@@ -145,20 +130,21 @@ int	check_open_quotes(char const *s, t_main *main)
 			{
 				//printf("s_qts on 0 -> s[i] : %c | i : %d\n", s[i], i);
 				d_qts = 0;
+				main->d_qs[r1++] = tmp2;
 				i++;
 			}
 		}
-		printf("s[i] : %c | i : %d\n", s[i], i);
+		//printf("s[i] : %c | i : %d\n", s[i], i);
 		if (s[i] && s[i] != '\'' && s[i] != '"')
 			i++;
 	}
-	main->ok[r] = -1;
-	printf("ok0 : %d | ok1 : %d\n", main->ok[0], main->ok[1]);
+	main->s_qs[r] = -1;
+	main->d_qs[r1] = -1;
+	printf("s_qs0 : %d | s_qs1 : %d | s_qs2 : %d\n", main->s_qs[0], main->s_qs[1], main->s_qs[2]);
+	printf("d_qs0 : %d | d_qs1 : %d | s_qs2 : %d\n", main->d_qs[0], main->d_qs[1], main->d_qs[2]);
 	printf("s_qts : %d| d_qts : %d\n", s_qts, d_qts);
 	if (s_qts == 1 || d_qts == 1)
 		return (0);
-	// main->s_qts = 1;
-	// main->s_qts_index = i;
 	return (1);
 }
 
@@ -177,22 +163,22 @@ char	**ft_split_k_q_s(t_main *main, char const *s, char c) // trop de lignes
 	no_space = get_rid_of_spaces(s);
 	if (check_open_quotes(no_space, main) == 0)
 		return (NULL);
+	no_space = replace_dollar(no_space, main);
+	printf("no space : <%s>\n", no_space);
 	size = count_words(no_space);
-	printf("size : %d\n", size);
 	if (size <= 0)
 		return (NULL);
-	no_space = replace_dollar(no_space, main);
-	//exit(0);
-	printf("no space : %s\n", no_space);
-	return (NULL);
 	dest = malloc((size + 1) * sizeof(char *));
 	if (dest == NULL || s == 0)
 		return (free(no_space), NULL);
 	while (no_space[i])
 	{
+		write(1, "here\n", 5);
 		i = ft_calc_k_q_s(i, 0, c, no_space);
 		j = ft_calc_k_q_s(i, 1, c, no_space);
+		printf("no_space adter calc : <%s>\n", ft_substr(no_space, i, j - i));
 		dest[x] = get_rid_of_quotes(ft_substr(no_space, i, j - i));
+		printf("no_space adter quotes rid : <%s>\n", dest[x]);
 		if (dest[x++] == NULL || j < 0)
 			return (ft_free_split_k_q_s(dest, x));
 		i += (j - i);
