@@ -63,31 +63,35 @@ void	update_quotes_pos(t_main *main, int r, int r1, int diff, int which)
 	}
 }
 
-void	replace(t_main *main, char **tmp2, int rep_pos, int r, int r1, int check)
+void	replace(t_main *main, char **tmp2)
 {
 	int diff;
+	int r_b;
+	int r1_b;
 
 	diff = 0;
-	if (ft_strcmp (*tmp2, "$") == 0 && check == 0)
+	r_b = main->dollars.r;
+	r1_b = main->dollars.r1;
+	if (ft_strcmp (*tmp2, "$") == 0 && main->dollars.check == 0)
 		return ;
-	if (rep_pos >= 0)
+	if (main->dollars.rep_pos >= 0)
 	{
-		diff = ft_strlen(&ft_strchr(main->env[rep_pos], '=')[1]) - ft_strlen(*(tmp2));
-		update_quotes_pos(main, r, r1, diff, 0);
-		*tmp2 = ft_strdup(&ft_strchr(main->env[rep_pos], '=')[1]);
+		diff = ft_strlen(&ft_strchr(main->env[main->dollars.rep_pos], '=')[1]) - ft_strlen(*(tmp2));
+		update_quotes_pos(main, r_b, r1_b, diff, 0);
+		*tmp2 = ft_strdup(&ft_strchr(main->env[main->dollars.rep_pos], '=')[1]);
 	}
-	else if (rep_pos == -1 || check == 1)
+	else if (main->dollars.rep_pos == -1 || main->dollars.check == 1)
 	{
-		update_quotes_pos(main, r, r1, ft_strlen(*(tmp2)), 1);
+		update_quotes_pos(main, r_b, r1_b, ft_strlen(*(tmp2)), 1);
 		*tmp2 = ft_strdup("");
 	}
-	else if (rep_pos == -2)
+	else if (main->dollars.rep_pos == -2)
 	{
 		diff = ft_strlen(ft_itoa(main->last_exit_code)) - 2;
-		update_quotes_pos(main, r, r1, diff, 0);
+		update_quotes_pos(main, r_b, r1_b, diff, 0);
 		*tmp2 = ft_strdup(ft_itoa(main->last_exit_code));
 	}
-	else if (rep_pos == -3)
+	else if (main->dollars.rep_pos == -3)
 		*tmp2 = ft_strdup("1000");
 }
 
@@ -179,131 +183,161 @@ void	del_backslash(char **final_tmp)
 	free(*(final_tmp));
 	*(final_tmp) = NULL;
 	*final_tmp = fill_test(tmp, (i - bs));
-	printf("final : %s\n", *final_tmp);
 }
 
+void	search_sollar(t_main *main, char *arg_dup)
+{
+	if (main->dollars.j == main->s_qs[main->dollars.r])
+	{
+		main->dollars.j++;
+		while (arg_dup[main->dollars.j] != '\'')
+			main->dollars.j++;
+		main->dollars.r++;
+	}
+	if (main->dollars.j == main->d_qs[main->dollars.r1])
+		main->dollars.r1++;
+	if (arg_dup[main->dollars.j] == '\\' && arg_dup[main->dollars.j + 1] == '$')
+				main->dollars.j += 2;
+	main->dollars.j++;
+	if (arg_dup[main->dollars.j] == '$' && (arg_dup[main->dollars.j + 1] == ' ' || arg_dup[main->dollars.j + 1] == '=' || arg_dup[main->dollars.j + 1] == ':' || (arg_dup[main->dollars.j + 1] == '"' && in_dquote(main, arg_dup, main->dollars.j) == 1)))
+		main->dollars.j++;
+}
 
+char	*create_end_str(t_main *main, char *arg_dup)
+{
+	if (((arg_dup[main->dollars.i] == '"' && main->d_qs[main->dollars.r1] == main->dollars.i) || (arg_dup[main->dollars.i] == '\'' && main->s_qs[main->dollars.r] == main->dollars.i)) && arg_dup[main->dollars.i - 1] == '$')
+		main->dollars.check = 1;
+	if ((arg_dup[main->dollars.i] == '?' || (arg_dup[main->dollars.i] >= '0' && arg_dup[main->dollars.i] <= '9')) && arg_dup[main->dollars.i - 1] == '$')
+		main->dollars.i += 1;
+	main->dollars.end = main->dollars.i;
+	return (ft_substr(arg_dup, main->dollars.i, (ft_strlen(arg_dup) - main->dollars.i)));
+}
+
+void	clear_dollar(t_main *main)
+{
+	if ((size_t)main->dollars.end == ft_strlen(main->dollars.arg_dup))
+	{
+		if (main->dollars.tmp)
+		{
+			free(main->dollars.tmp);
+			main->dollars.tmp = NULL;
+		}
+		if (main->dollars.tmp3)
+		{
+			free(main->dollars.tmp3);
+			main->dollars.tmp3 = NULL;
+		}
+		free(main->dollars.tmp2);
+		main->dollars.tmp2 = NULL;
+		main->dollars.i = main->dollars.end;
+		main->dollars.j = 0;
+		main->dollars.end = 0;
+		main->dollars.r = 0;
+		main->dollars.r1 = 0;
+		main->dollars.rep_pos = 0;
+		main->dollars.check = 0;
+	}
+	else
+	{
+		printf("\n");
+		arg_replace(&main->dollars.arg_dup, main->dollars.final_tmp); // no sure
+		if (main->dollars.tmp)
+		{
+			free(main->dollars.tmp);
+			main->dollars.tmp = NULL;
+		}
+		if (main->dollars.tmp3)
+		{
+			free(main->dollars.tmp3);
+			main->dollars.tmp3 = NULL;
+		}
+		free(main->dollars.tmp2);
+		main->dollars.tmp2 = NULL;
+		free(main->dollars.final_tmp);
+		main->dollars.final_tmp = NULL;
+		main->dollars.i = 0;
+		main->dollars.j = 0;
+		main->dollars.end = 0;
+		main->dollars.r = 0;
+		main->dollars.r1 = 0;
+		main->dollars.rep_pos = 0;
+		main->dollars.check = 0;
+	}
+}
+void	print_values(t_main *main)
+{
+	printf("\n");
+	printf("i : %d\n", main->dollars.i);
+	printf("j : %d\n", main->dollars.j);
+	printf("end : %d\n", main->dollars.end);
+	printf("r : %d\n", main->dollars.r);
+	printf("r1 : %d\n", main->dollars.r1);
+	printf("rep_pos : %d\n", main->dollars.rep_pos);
+	printf("check : %d\n", main->dollars.check);
+	printf("arg_dup : <%s>\n", main->dollars.arg_dup);
+	printf("tmp : <%s>\n", main->dollars.tmp);
+	printf("tmp2 : <%s>\n", main->dollars.tmp2);
+	printf("tmp3 : <%s>\n", main->dollars.tmp3);
+	printf("final_tmp : <%s>\n", main->dollars.final_tmp);
+	printf("\n");
+}
 
 char	*replace_dollar(char *arg, t_main *main)
 {
-	int i;
-	int j;
-	int end;
-	char *tmp = NULL;
-	char *tmp2 = NULL;
-	char *tmp3 = NULL;
-	char *final_tmp = NULL;
-	char *arg_dup = NULL;
-	int check = 0;
-
-	i = 0;
-	j = 0;
-	end = 0;
-	int r = 0;
-	int r1 = 0;
-	arg_dup = ft_strdup(arg);
-	(void) main;
-	while (arg_dup[i])
+	main->dollars.arg_dup = ft_strdup(arg);
+	if (main->dollars.final_tmp)
 	{
-		printf("arg_dup : <%s>\n", arg_dup);
-		if (arg_dup[j] == '$' && (arg_dup[j + 1] == ' ' || arg_dup[j + 1] == '=' || arg_dup[j + 1] == ':' || (arg_dup[j + 1] == '"' && in_dquote(main, arg_dup, j) == 1)))
-		{
-			printf("j : %d\n", j);
-			j++;
-		}
-		while (arg_dup[j] != '$' && arg_dup[j])
-		{
-			if (j == main->s_qs[r])
-			{
-				printf("j : %d\n", j);
-				j++;
-				while (arg_dup[j] != '\'')
-					j++;
-				printf("j : %d\n", j);
-				r++;
-			}
-			if (j == main->d_qs[r1])
-				r1++;
-			if (arg_dup[j] == '\\' && arg_dup[j + 1] == '$')
-				j += 2;
-			j++;
-			if (arg_dup[j] == '$' && (arg_dup[j + 1] == ' ' || arg_dup[j + 1] == '=' || (arg_dup[j + 1] == '"' && in_dquote(main, arg_dup, j) == 1)))
-			{
-				printf("j : %d\n", j);
-				printf("HERE\n");
-				j++;
-			}
-		}
-		if (j > 0)
-		{
-			tmp = ft_substr(arg_dup, i, j - i);
-			printf("tmp_debut : <%s>\n", tmp);
-		}
-		i = j;
-		if (arg_dup[i] == '$')
-			i += 1;
-		while (arg_dup[i] != '$' && arg_dup[i] != '?' && arg_dup[i] != '=' && (arg_dup[i] != '"') && (arg_dup[i] != '\'') && arg_dup[i] != ' ' && arg_dup[i] != ':' && !ft_isdigit(arg_dup[i]) && arg_dup[i] != '%' && arg_dup[i] != '\\' && arg_dup[i])
-			i++;
-		if (arg_dup[i] == '$' || arg_dup[i] == '?' || arg_dup[i] == '=' || arg_dup[i] == '"' || arg_dup[i] == '\'' || arg_dup[i] == ' ' || arg_dup[i] == ':' || ft_isdigit(arg_dup[i]) || arg_dup[i] == '%' || arg_dup[i] == '\\')
-		{
-			if (((arg_dup[i] == '"' && main->d_qs[r1] == i) || (arg_dup[i] == '\'' && main->s_qs[r] == i)) && arg_dup[i - 1] == '$')
-				check = 1;
-			if ((arg_dup[i] == '?' || (arg_dup[i] >= '0' && arg_dup[i] <= '9')) && arg_dup[i - 1] == '$')
-				i++;
-			end = i;
-			tmp3 = ft_substr(arg_dup, i, ft_strlen(arg_dup) - i);
-			printf("tmp3_end : <%s>\n", tmp3);
-		}
-		else
-			end = ft_strlen(arg_dup);
-		tmp2 = ft_substr(arg_dup, j, end - j);
-		printf("tmp2_dollar : <%s>\n", tmp2);
-		int rep_pos = check_var_exists2(main, &tmp2[1]);
-		replace(main, &tmp2, rep_pos, r, r1, check);
-		printf("\n");
-		printf("tmp_debut : <%s>\n", tmp);
-		printf("tmp2_dollar replaced : %s\n", tmp2);
-		printf("tmp3_end : <%s>\n", tmp3);
-		final_tmp = attach_tmps(tmp, tmp2, tmp3);
-		printf("final_tmp : <%s>\n", final_tmp);
-		if ((size_t)end == ft_strlen(arg_dup))
-		{
-			if (tmp)
-				free(tmp);
-			if (tmp3)
-				free(tmp3);
-			free(tmp2);
-			i = end;
-		}
-		else
-		{
-			printf("\n");
-			arg_replace(&arg_dup, final_tmp);
-			if (tmp)
-			{
-				free(tmp);
-				tmp = NULL;
-			}
-			if (tmp3)
-			{
-				free(tmp3);
-				tmp3 = NULL;
-			}
-			free(tmp2);
-			tmp2 = NULL;
-			free(final_tmp);
-			final_tmp = NULL;
-			i = 0;
-			j = 0;
-			end = 0;
-			r = 0;
-			r1 = 0;
-		}
+		// free(main->dollars.final_tmp);
+		main->dollars.final_tmp = NULL;
 	}
-	free(arg_dup);
-	if (ft_strchr(final_tmp, '\\'))
-		del_backslash(&final_tmp);
-	return (final_tmp);
+	print_values(main);
+	while (main->dollars.arg_dup[main->dollars.i])
+	{
+		ft_putstr_fd("in while\n", 1);
+		printf("arg_dup : <%s>\n", main->dollars.arg_dup); //
+		if (main->dollars.arg_dup[main->dollars.j] == '$' && (main->dollars.arg_dup[main->dollars.j + 1] == ' ' || main->dollars.arg_dup[main->dollars.j + 1] == '=' || main->dollars.arg_dup[main->dollars.j + 1] == ':' || (main->dollars.arg_dup[main->dollars.j + 1] == '"' && in_dquote(main, main->dollars.arg_dup, main->dollars.j) == 1)))
+			main->dollars.j++;
+		while (main->dollars.arg_dup[main->dollars.j] != '$' && main->dollars.arg_dup[main->dollars.j])
+			search_sollar(main, main->dollars.arg_dup);
+		if (main->dollars.j > 0)
+		{ //
+			main->dollars.tmp = ft_substr(main->dollars.arg_dup, main->dollars.i, (main->dollars.j - main->dollars.i));
+			printf("tmp_debut : <%s>\n", main->dollars.tmp); //
+		} //
+		main->dollars.i = main->dollars.j;
+		if (main->dollars.arg_dup[main->dollars.i] == '$')
+			main->dollars.i += 1;
+		while (main->dollars.arg_dup[main->dollars.i] != '$' && main->dollars.arg_dup[main->dollars.i] != '?' && main->dollars.arg_dup[main->dollars.i] != '=' && (main->dollars.arg_dup[main->dollars.i] != '"') && (main->dollars.arg_dup[main->dollars.i] != '\'') && main->dollars.arg_dup[main->dollars.i] != ' ' && main->dollars.arg_dup[main->dollars.i] != ':' && !ft_isdigit(main->dollars.arg_dup[main->dollars.i]) && main->dollars.arg_dup[main->dollars.i] != '%' && main->dollars.arg_dup[main->dollars.i] != '\\' && main->dollars.arg_dup[main->dollars.i])
+			main->dollars.i++;
+		if ((size_t)main->dollars.i != ft_strlen(main->dollars.arg_dup))
+		{ //
+			main->dollars.tmp3 = create_end_str(main, main->dollars.arg_dup);
+			printf("tmp3_end : <%s>\n", main->dollars.tmp3); //
+		} //
+		else
+			main->dollars.end = ft_strlen(main->dollars.arg_dup);
+		if (ft_strcmp(main->dollars.tmp, main->dollars.arg_dup) != 0)
+		{
+			main->dollars.tmp2 = ft_substr(main->dollars.arg_dup, main->dollars.j, (main->dollars.end - main->dollars.j));
+			printf("tmp2_dollar : <%s>\n", main->dollars.tmp2); //
+			main->dollars.rep_pos = check_var_exists2(main, &main->dollars.tmp2[1]); // not sure
+			replace(main, &main->dollars.tmp2); // not sure
+		}
+		printf("\n"); //
+		printf("tmp_debut : <%s>\n", main->dollars.tmp); //
+		printf("tmp2_dollar replaced : %s\n", main->dollars.tmp2); //
+		printf("tmp3_end : <%s>\n", main->dollars.tmp3); //
+		main->dollars.final_tmp = attach_tmps(main->dollars.tmp, main->dollars.tmp2, main->dollars.tmp3);
+		printf("final_tmp : <%s>\n", main->dollars.final_tmp); //
+		clear_dollar(main);
+	}
+	main->dollars.i = 0;
+	free(main->dollars.arg_dup);
+	main->dollars.arg_dup = NULL;
+	if (ft_strchr(main->dollars.final_tmp, '\\'))
+		del_backslash(&main->dollars.final_tmp); // not sure
+	print_values(main);
+	return (main->dollars.final_tmp);
 }
 
 int	handle_sc(t_main *main, char **split, int i)
