@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/26 16:51:15 by tzizi             #+#    #+#             */
-/*   Updated: 2025/01/31 23:57:49 by marvin           ###   ########.fr       */
+/*   Updated: 2025/02/01 11:22:07 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -151,6 +151,9 @@ char	**ft_split_k_q_s(t_main *main, char const *s, char c) // trop de lignes
 	printf("no space before dollar : <%s>\n", no_space);
 	no_space = replace_dollar(no_space, main);
 	printf("no space after dollar : <%s>\n", no_space);
+	printf("no space before sc_c : <%s>\n", no_space);
+	no_space = handle_sc_c(no_space, main);
+	printf("no space after sc_c : <%s>\n", no_space);
 	size = count_words(no_space);
 	if (size <= 0)
 		return (NULL);
