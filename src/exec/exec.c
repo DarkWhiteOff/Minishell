@@ -71,8 +71,11 @@ int	ft_process(t_main *main, char *cmd)
 					main->tokens[0].value);
 		}
 		else
-			printf(GREY"minishell: %s: command not found\n"RESET,
-				main->tokens[0].value);
+		{
+			if (ft_strcmp(main->tokens[0].value, ":") != 0 && ft_strcmp(main->tokens[0].value, "!"))
+				printf(GREY"minishell: %s: command not found\n"RESET,
+					main->tokens[0].value);
+		}
 	}
 	return (1);
 }
