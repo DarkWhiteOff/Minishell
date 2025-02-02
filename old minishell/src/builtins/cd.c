@@ -103,6 +103,7 @@ int	cd(t_main *main, char **split)
 	{
 		if (check_syntax_cd(main, split[1]) == 1)
 		{
+			printf("arg : %s", split[1]);
 			update_oldpwd_pwd(main);
 			return (free(dir), 1);
 		}

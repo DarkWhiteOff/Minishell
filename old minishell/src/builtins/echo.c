@@ -65,8 +65,10 @@ int	ft_echo(t_main *main, char **cmd)
 
 	nl = 1;
 	fd = get_fd_out(cmd);
-	if (fd < 0 || !cmd[1])
+	if (fd < 0)
 		return (perror(GREY"minishell"), 1);
+	if (!cmd[1])
+		return (0);
 	if (ft_strcmp(cmd[1], "-n") == 0)
 		nl = 0;
 	if (fd > 1)

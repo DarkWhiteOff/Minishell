@@ -32,8 +32,8 @@ int	init_tokens(char **split, t_main *main)
 			main->tokens[i].type = command;
 		else if (is_sc(split[i]) > 0)
 		{
-			if (!handle_sc(main, split, i))
-				return (0);
+			// if (!handle_sc(main, split, i))
+			// 	return (0);
 			if (!ft_strcmp(split[i], "<<"))
 				main->hc_pos = i;
 		}
