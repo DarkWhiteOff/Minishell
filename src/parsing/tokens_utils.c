@@ -369,23 +369,6 @@ char	*replace_dollar(char *arg, t_main *main)
 	return (main->dollars.final_tmp);
 }
 
-int	handle_sc(t_main *main, char **split, int i)
-{
-	int		sc_type;
-
-	sc_type = is_sc(split[i]);
-	if (sc_type == 1)
-	{
-		main->tokens[i].type = sc;
-		return (1);
-	}
-	if (sc_type == 2)
-	{
-		main->tokens[i].type = argument;
-		return (1);
-	}
-	return (0);
-}
 // void	redirections_handler(char *arg, t_main *main)
 // {
 // 	int i;
