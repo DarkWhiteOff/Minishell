@@ -1,29 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strcmp.c                                        :+:      :+:    :+:   */
+/*   ft_strlen.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: tzizi <tzizi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/12 14:57:07 by tzizi             #+#    #+#             */
-/*   Updated: 2024/11/18 15:41:08 by tzizi            ###   ########.fr       */
+/*   Created: 2024/05/22 16:07:03 by tzizi             #+#    #+#             */
+/*   Updated: 2024/11/18 15:41:00 by tzizi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
 
-int	ft_strcmp(const char *s1, const char *s2)
+size_t	ft_strlen(const char *s)
 {
 	int	i;
 
 	i = 0;
-	if (s1 == NULL || s2 == NULL)
-		return (!(s1 == NULL && s2 == NULL));
-	while (s1[i] || s2[i])
-	{
-		if (s1[i] != s2[i])
-			return (s1[i] - s2[i]);
+	if (!s)
+		return (0);
+	while (s[i])
 		i++;
-	}
-	return (s1[i] - s2[i]);
+	return (i);
 }

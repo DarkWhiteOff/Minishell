@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 16:12:07 by tzizi             #+#    #+#             */
-/*   Updated: 2025/02/01 16:21:24 by marvin           ###   ########.fr       */
+/*   Updated: 2025/02/01 17:00:25 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,54 +15,51 @@
 int	handle_opening_outfile(char *file, int append)
 {
 	int		fd;
+	char	*tmp;
 
 	fd = -1;
+	tmp = get_rid_of_spaces(file);
 	if (append)
 	{
-		fd = open(file, O_WRONLY | O_CREAT | O_APPEND, 0777);
+		fd = open(tmp, O_WRONLY | O_CREAT | O_APPEND, 0777);
 		if (fd < 0)
-			return (-2);
-		if (access(file, W_OK) != 0)
+			return (free(tmp), -1);
+		if (access(tmp, W_OK) != 0)
 		{
 			close(fd);
-			return (-3);
+			return (free(tmp), -1);
 		}
 	}
 	else
 	{
-		fd = open(file, O_WRONLY | O_CREAT | O_TRUNC, 0777);
+		fd = open(tmp, O_WRONLY | O_CREAT | O_TRUNC, 0777);
 		if (fd < 0)
-			return (-2);
-		if (access(file, W_OK) != 0)
+			return (free(tmp), -1);
+		if (access(tmp, W_OK) != 0)
 		{
 			close(fd);
-			return (-3);
+			return (free(tmp), -1);
 		}
 	}
-	return (fd);
+	return (free(tmp), fd);
 }
 
-int	handle_opening_infile(char *file, int heredoc)
+int	handle_opening_infile(char *file, int append)
 {
 	int		fd;
 
 	fd = -1;
-	if (heredoc) // heredoc
-	{
-		fd = open("heredoc.tmp", O_RDWR | O_CREAT | O_TRUNC, 0777);
-		if (fd < 0)
-			return (-2);
-		return (fd);
-	}
+	if (append) // heredoc
+		return (-1);
 	else
 	{
 		fd = open(file, O_RDONLY);
 		if (fd < 0)
-			return (-2);
+			return (-1);
 		if (access(file, R_OK) != 0)
 		{
 			close(fd);
-			return (-3);
+			return (-1);
 		}
 	}
 	return (fd);
@@ -79,8 +76,6 @@ char	*get_next(char **cmd, char *tf)
 	{
 		return (&ft_strrchr(*cmd, tf[0])[1]);
 	}
-	if (!ft_strcmp(tf, "<"))
-		return (*cmd);
 	return (NULL);
 }
 
@@ -97,7 +92,7 @@ int	get_fd_out(char **cmd)
 		{
 			fd = handle_opening_outfile(get_next(&cmd[i], ">>"), 1);
 		}
-		else if (get_next(&cmd[i], ">"))
+		if (get_next(&cmd[i], ">"))
 		{
 			fd = handle_opening_outfile(get_next(&cmd[i], ">"), 0);
 		}
@@ -109,19 +104,46 @@ int	get_fd_out(char **cmd)
 int	get_fd_in(char **cmd)
 {
 	int	i;
-	int	fd;
 
 	i = 0;
-	fd = 0;
 	while (cmd[i] && ft_strcmp(cmd[i], "|") != 0)
 	{
-		if (get_next(&cmd[i], "<"))
+		if (ft_strcmp(cmd[i], "<") == 0)
 		{
-			if (fd > 0)
-				close (fd);
-			fd = handle_opening_infile(get_next(&cmd[i], "<"), 0);
+			if (cmd[i + 1])
+				return (handle_opening_infile(cmd[i + 1], 0));
+			return (-1);
 		}
 		i++;
 	}
-	return (fd);
+	return (0);
+}
+
+int	get_cmd_number(t_main *main, char **split)
+{
+	int	i;
+	int	j;
+	int	cmd;
+
+	cmd = 0;
+	i = 0;
+	while (split[i])
+	{
+		if (is_cmd(split[i], main->path))
+		{
+			cmd++;
+			j = i + 1;
+			while (split[j])
+			{
+				if (ft_strcmp(split[j], "|") == 0)
+					break ;
+				if (main->tokens[j].type == command)
+					main->tokens[j].type = argument;
+				j++;
+			}
+			i += (j - i - 1);
+		}
+		i++;
+	}
+	return (cmd);
 }

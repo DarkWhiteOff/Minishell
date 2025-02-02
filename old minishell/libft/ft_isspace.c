@@ -1,29 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strcmp.c                                        :+:      :+:    :+:   */
+/*   ft_isspace.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tzizi <tzizi@student.42.fr>                +#+  +:+       +#+        */
+/*   By: zamgar <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/12 14:57:07 by tzizi             #+#    #+#             */
-/*   Updated: 2024/11/18 15:41:08 by tzizi            ###   ########.fr       */
+/*   Created: 2024/05/27 16:11:51 by zamgar            #+#    #+#             */
+/*   Updated: 2024/05/27 16:15:36 by zamgar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
-
-int	ft_strcmp(const char *s1, const char *s2)
+int	ft_isspace(int c)
 {
-	int	i;
-
-	i = 0;
-	if (s1 == NULL || s2 == NULL)
-		return (!(s1 == NULL && s2 == NULL));
-	while (s1[i] || s2[i])
-	{
-		if (s1[i] != s2[i])
-			return (s1[i] - s2[i]);
-		i++;
-	}
-	return (s1[i] - s2[i]);
+	if (c == ' ' || c == '\t' || c == '\v'
+		|| c == '\n' || c == '\f' || c == '\r')
+		return (1);
+	return (0);
 }

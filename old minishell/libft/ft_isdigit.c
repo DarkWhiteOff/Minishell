@@ -1,29 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strcmp.c                                        :+:      :+:    :+:   */
+/*   ft_isdigit.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tzizi <tzizi@student.42.fr>                +#+  +:+       +#+        */
+/*   By: zamgar <marvin@42.fr>                      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/11/12 14:57:07 by tzizi             #+#    #+#             */
-/*   Updated: 2024/11/18 15:41:08 by tzizi            ###   ########.fr       */
+/*   Created: 2024/05/27 16:10:15 by zamgar            #+#    #+#             */
+/*   Updated: 2024/05/30 14:11:21 by zamgar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
+//#include <stdio.h>
 
-int	ft_strcmp(const char *s1, const char *s2)
+int	ft_isdigit(int c)
 {
-	int	i;
+	if (c >= '0' && c <= '9')
+		return (1);
+	return (0);
+}
 
-	i = 0;
-	if (s1 == NULL || s2 == NULL)
-		return (!(s1 == NULL && s2 == NULL));
-	while (s1[i] || s2[i])
+/*int	main()
+{
+	int i;
+	i = 'a';
+	while (i <= 'z')
 	{
-		if (s1[i] != s2[i])
-			return (s1[i] - s2[i]);
+		printf("%d", ft_isdigit(i));
 		i++;
 	}
-	return (s1[i] - s2[i]);
-}
+	return (0);
+}*/

@@ -12,25 +12,24 @@
 
 #include "../includes/minishell.h"
 
-int	builtin(t_main *main)
+int	builtin(t_main *main, char **split, char *cmd)
 {
 	char	*command;
-	char	**split;
 
-	split = ft_split(main->cmd_tokens->args, ' ');
-	command = get_cmd(main->cmd_tokens->cmd);
+	(void)cmd;
+	command = get_cmd(split[0]);
 	if (ft_strcmp(command, "env") == 0)
-		main->last_exit_code = print_env(main, 0, split);
+		return (print_env(main, 0, split));
 	if (ft_strcmp(command, "export") == 0)
-		main->last_exit_code = prep_export(main, split);
+		return (prep_export(main, split));
 	if (ft_strcmp(command, "unset") == 0)
-		main->last_exit_code = prep_unset(main, split);
+		return (prep_unset(main, split));
 	if (ft_strcmp(command, "echo") == 0)
-		main->last_exit_code = ft_echo(main, split);
+		return (ft_echo(main, split));
 	if (ft_strcmp(command, "cd") == 0)
-		main->last_exit_code = cd(main, split);
+		return (cd(main, split));
 	if (ft_strcmp(command, "pwd") == 0)
-		main->last_exit_code = pwd(main, split);
+		return (pwd(main, split));
 	if (ft_strcmp(command, "exit") == 0)
 	{
 		printf("exit\n");
@@ -39,48 +38,45 @@ int	builtin(t_main *main)
 	return (1);
 }
 
-int	no_cmd(t_main *main)
+int	ft_process(t_main *main, char *cmd)
 {
-	if (ft_strchr(main->cmd_tokens->args, '/'))
-	{
-		if (chdir(main->cmd_tokens->args) == 0)
-		{
-			printf(GREY"minishell: %s: Is a directory\n"RESET,
-				main->cmd_tokens->args);
-			return_to_pwd(main);
-			return (126);
-		}
-		else
-			printf(GREY"minishell: %s: No such file or directory\n"RESET,
-				main->cmd_tokens->args);
-	}
-	else
-		printf(GREY"minishell: %s: command not found\n"RESET,
-			main->cmd_tokens->args);
-	return (127);
-}
-
-int	ft_process(t_main *main)
-{
-	t_cmd	*cmd_tokens;
-
-	// if (main->unexpected_token)
-	
-	printf("nb cmd %d\n", main->nb_cmd);
-	cmd_tokens = main->cmd_tokens;
-	if (!ft_strcmp(cmd_tokens->cmd, "cat") || !ft_strcmp(cmd_tokens->cmd, "sleep"))
+	(void)cmd;
+	main->split = prep_cmd_exec(main);
+	if (ft_strcmp(main->base_split[0], "cat") == 0 || ft_strcmp(main->base_split[0], "sleep") == 0)
 		cat = 1;
-	if (main->nb_cmd >= 1)
+	if (main->hc_pos >= 0)
+		her_doc(main, main->split);
+	else if (main->nb_cmd >= 1)
 	{
 		if (main->nb_cmd == 1)
 		{
-			if (check_builtin(cmd_tokens->cmd))
-				return (builtin(main));
+			if (check_builtin(main->base_split[0]))
+				return (builtin(main, main->base_split, main->cmd));
 		}
 		main->last_exit_code = launch_process(main);
 		main->nb_cmd = 0;
 	}
-	else if (cmd_tokens->args)
-		main->last_exit_code = no_cmd(main);
+	else if (main->tokens[0].value != NULL)
+	{
+		if (ft_strchr(main->tokens[0].value, '/'))
+		{
+			if (chdir(main->tokens[0].value) == 0)
+			{
+				printf(GREY"minishell: %s: Is a directory\n"RESET,
+					main->tokens[0].value);
+				return_to_pwd(main);
+			}
+			else
+				printf(GREY"minishell: %s: No such file or directory\n"RESET,
+					main->tokens[0].value);
+		}
+		// else if (main->ut_nl_err == 1)
+		// 	printf(GREY"minishell: syntax error near unexpected token `newline'\n"RESET);
+		else
+		{
+			printf(GREY"minishell: %s: command not found\n"RESET,
+				main->tokens[0].value);
+		}
+	}
 	return (1);
 }

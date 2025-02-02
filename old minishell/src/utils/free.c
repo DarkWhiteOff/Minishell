@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: tzizi <tzizi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/18 14:36:53 by tzizi             #+#    #+#             */
-/*   Updated: 2025/02/01 18:32:29 by marvin           ###   ########.fr       */
+/*   Updated: 2024/12/18 14:40:41 by tzizi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,24 @@
 
 void	free_process(t_main *main, int exit_code)
 {
-	// free_end_cmd(main);
+	free_end_cmd(main);
 	free_all_data(main);
 	exit (exit_code);
 }
 
 void	free_end_cmd(t_main *main)
 {
-	ft_lstclear(&main->cmd_tokens);
+	if (main->infile > 0)
+		close(main->infile);
+	main->infile = -1;
+	if (main->outfile > 0)
+		close(main->outfile);
+	main->outfile = -1;
+	free_split(main->split);
+	if (main->tokens)
+		free_tokens(main);
+	free_split(main->base_split);
+	free(main->cmd);
 }
 
 void	free_split(char **split)
@@ -33,7 +43,8 @@ void	free_split(char **split)
 	i = 0;
 	if (!split)
 		return ;
-	len = get_dchar_len(split);
+	while (split[len])
+		len++;
 	if (len <= 0)
 		return ;
 	while (i < len)
@@ -42,49 +53,14 @@ void	free_split(char **split)
 		i++;
 	}
 	free(split);
-	split = NULL;
 }
 
-void	clear_node(t_cmd *node)
+void	free_tokens(t_main *main)
 {
-    if (!node)
-        return ;
-    if (node->cmd)
-		free(node->cmd);
-    if (node->args)
-		free(node->args);
-    if (node->infile > 0)
-        close(node->infile);
-    if (node->outfile > 1)
-        close(node->outfile);
-    if (node->heredoc_eof)
-		free(node->heredoc_eof);
-	node->cmd = NULL;
-	node->args = NULL;
-	node->heredoc_eof = NULL;
-    node->next = NULL;
-}
-
-void    ft_lstclear(t_cmd **lst)
-{
-    if (*lst == NULL)
-        return ;
-    else if ((*lst)->next == NULL)
-    {
-        ft_lstdelone(*lst);
-        *lst = NULL;
-    }
-    else
-    {
-        ft_lstclear(&(*lst)->next);
-        ft_lstdelone(*lst);
-        *lst = NULL;
-    }
-}
-void    ft_lstdelone(t_cmd *lst)
-{
-    clear_node(lst);
-    free(lst);
+	if (main->tokens)
+		free(main->tokens);
+	main->tokens = 0;
+	main->tokens_len = 0;
 }
 
 void	free_all_data(t_main *main)
@@ -93,5 +69,5 @@ void	free_all_data(t_main *main)
 		free_env(main->env, main->env_len);
 	if (main->export)
 		free_env(main->export, main->export_len);
-	ft_lstclear(&main->cmd_tokens);
+	free_tokens(main);
 }

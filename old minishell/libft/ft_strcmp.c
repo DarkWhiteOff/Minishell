@@ -1,44 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strdup.c                                        :+:      :+:    :+:   */
+/*   ft_strcmp.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/05/22 16:03:22 by zamgar            #+#    #+#             */
-/*   Updated: 2025/01/31 17:12:47 by marvin           ###   ########.fr       */
+/*   Created: 2024/11/12 14:57:07 by tzizi             #+#    #+#             */
+/*   Updated: 2025/01/31 16:04:51 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/minishell.h"
-//#include <stdio.h>
 
-char	*ft_strdup(const char *s)
+int	ft_strcmp(const char *s1, const char *s2)
 {
-	int		i;
-	char	*ss;
-	char	*dest;
+	int	i;
 
 	i = 0;
-	ss = (char *)s;
-	while (ss[i] != '\0')
-		i++;
-	dest = (char *)malloc(sizeof(char) * i + 1);
-	if (dest == NULL)
-		return (NULL);
-	i = 0;
-	while (ss[i] != '\0')
+	if (s1 == NULL || s2 == NULL)
+		return (!(s1 == NULL && s2 == NULL));
+	while (s1[i] || s2[i])
 	{
-		dest[i] = ss[i];
+		if (s1[i] != s2[i])
+			return (s1[i] - s2[i]);
 		i++;
 	}
-	dest[i] = '\0';
-	return (dest);
+	return (s1[i] - s2[i]);
 }
-
-/*int	main()
-{
-	const char s[50] = "lorem ipsum dolor sit amet";
-	printf("%s", ft_strdup(s));
-	return (0);
-}*/

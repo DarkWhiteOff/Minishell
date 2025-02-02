@@ -386,3 +386,28 @@ char	*replace_dollar(char *arg, t_main *main)
 // 	else if (ft_strcmp(arg, ">") == 0 || ft_strcmp(arg, "<") == 0 || ft_strcmp(arg, ">>") == 0 || ft_strcmp(arg, "<<") == 0 || ft_strcmp(arg, "<>") == 0)
 // 			main->ut_nl_err = 1;
 // }
+
+char	*handle_sc_c(char *arg, t_main *main)
+{
+	char *arg_without_quotes;
+
+	arg_without_quotes = NULL;
+	if (arg == NULL)
+		return (NULL);
+	// if (redirections_handler(arg, main) == 1)
+	// {
+
+	// }
+	if (main->s_qs[0] == -1 || main->d_qs[0] == -1)
+	{
+		if (ft_strcmp(arg, "!") == 0 || ft_strcmp(arg, ":") == 0)
+			return (free(arg), ft_strdup(""));
+	}
+	if (main->s_qs[0] > -1 || main->d_qs[0] > -1)
+	{
+		arg_without_quotes = get_rid_of_quotes(ft_strdup(arg));
+		if (ft_strcmp(arg_without_quotes, ":") == 0)
+			return (free(arg_without_quotes), ft_strdup(""));
+	}
+	return (arg);
+}
