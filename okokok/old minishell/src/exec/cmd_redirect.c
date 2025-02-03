@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_redirect.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: zamgar <zamgar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 16:12:07 by tzizi             #+#    #+#             */
-/*   Updated: 2025/02/01 17:00:25 by marvin           ###   ########.fr       */
+/*   Updated: 2025/02/03 17:59:25 by zamgar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,6 +86,7 @@ int	get_fd_out(char **cmd)
 
 	i = 0;
 	fd = 1;
+	write(1, "BEFORE\n", 7);
 	while (cmd[i] && ft_strcmp(cmd[i], "|") != 0)
 	{
 		if (get_next(&cmd[i], ">>"))
@@ -98,6 +99,7 @@ int	get_fd_out(char **cmd)
 		}
 		i++;
 	}
+	ft_putstr_fd("AFTER\n", 1);
 	return (fd);
 }
 

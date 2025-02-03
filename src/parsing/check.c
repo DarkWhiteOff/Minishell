@@ -122,6 +122,39 @@ int	check_open_quotes(char const *s, t_main *main)
 	return (1);
 }
 
+void	get_close_quotes(char const *s, t_main *main)
+{
+	int i;
+	int r;
+	int r1;
+
+	i = 0;
+	r = 0;
+	r1 = 0;
+	while (s[i])
+	{
+		if (s[i] == '\'')
+		{
+			i++;
+			while (s[i] != '\'')
+				i++;
+			main->cl_s_qs[r++] = i;
+		}
+		if (s[i] == '"')
+		{
+			i++;
+			while (s[i] != '"')
+				i++;
+			main->cl_d_qs[r1++] = i;
+		}
+		i++;
+	}
+	main->cl_s_qs[r] = -1;
+	main->cl_d_qs[r1] = -1;
+	r = 0;
+	r1 = 0;
+}
+
 int check_syntax_redirect(char *s, t_main *main)
 {
 	int i;
