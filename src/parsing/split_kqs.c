@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   split_kqs.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zamgar <zamgar@student.42.fr>              +#+  +:+       +#+        */
+/*   By: tzizi <tzizi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/31 16:12:00 by marvin            #+#    #+#             */
-/*   Updated: 2025/02/03 19:14:25 by zamgar           ###   ########.fr       */
+/*   Updated: 2025/02/03 19:25:57 by tzizi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,27 +95,8 @@ char	**ft_split_k_q_s(t_main *main, char const *s, char c) // trop de lignes
 	no_space = get_rid_of_spaces(s);
 	if (check_open_quotes(no_space, main) == 0)
 		return (NULL);
-	//
-	get_close_quotes(no_space, main);
-	int r = 0;
-	int r1 = 0;
-	printf("single quotes :\n");
-	while (main->s_qs[r] != -1)
-	{
-		printf("opened -> main->s_qs[%d] : %d\n", r, main->s_qs[r]);
-		printf("closed -> main->cl_s_qs[%d] : %d\n", r, main->cl_s_qs[r]);
-		r++;
-	}
-	printf("\ndouble quotes :\n");
-	while (main->d_qs[r1] != -1)
-	{
-		printf("opened -> main->d_qs[%d] : %d\n", r1, main->d_qs[r1]);
-		printf("closed -> main->cl_d_qs[%d] : %d\n", r1, main->cl_d_qs[r1]);
-		r1++;
-	}
-	exit(0);
-	//
 	printf("no space before dollar : <%s>\n", no_space);
+	get_close_quotes(no_space, main);
 	no_space = replace_dollar(no_space, main);
 	printf("no space after dollar : <%s>\n\n", no_space);
 	no_space = handle_sc_c(no_space, main);
@@ -124,11 +105,10 @@ char	**ft_split_k_q_s(t_main *main, char const *s, char c) // trop de lignes
 	printf("no space : %s\n", tmp);
 	size = count_words(tmp);
 	if (size <= 0)
-		return (free(tmp), NULL);
-	printf("dest size : %d\n", size);
+		return (NULL);
 	dest = malloc((size + 1) * sizeof(char *));
 	if (dest == NULL || s == 0)
-		return (free(tmp), NULL);
+		return (free(no_space), NULL);
 	while (tmp[i])
 	{
 		i = ft_calc_k_q_s(i, 0, c, tmp);
