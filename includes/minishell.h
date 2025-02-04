@@ -90,9 +90,6 @@ typedef struct s_main
 	char		*last_ofile;
 	char		*cmd_no_quotes;
     char		*cmd_quotes;
-	char		**arg;
-	int			k;
-	int			total_len;
 }	t_main;
 
 // LIBFT
