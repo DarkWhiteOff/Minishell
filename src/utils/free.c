@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zamgar <zamgar@student.42.fr>              +#+  +:+       +#+        */
+/*   By: tzizi <tzizi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/18 14:36:53 by tzizi             #+#    #+#             */
-/*   Updated: 2025/02/04 08:46:55 by zamgar           ###   ########.fr       */
+/*   Updated: 2025/02/04 00:16:47 by tzizi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,14 +23,6 @@ void	free_end_cmd(t_main *main)
 	ft_lstclear(&main->cmd_tokens);
 	if (access("heredoc.tmp", F_OK) == 0)
 		unlink("heredoc.tmp");
-	main->u_token = NULL;
-	if (main->last_ofile)
-		free(main->last_ofile);
-	main->last_ofile = NULL;
-	main->total_len = 0;
-	main->k = 0;
-	if (main->arg)
-		free_split(main->arg);
 }
 
 void	free_split(char **split)
@@ -61,7 +53,4 @@ void	free_all_data(t_main *main)
 	if (main->export)
 		free_env(main->export, main->export_len);
 	ft_lstclear(&main->cmd_tokens);
-	main->u_token = NULL;
-	if (main->last_ofile)
-		free(main->last_ofile);
 }

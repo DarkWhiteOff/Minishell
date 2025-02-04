@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_redirect.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zamgar <zamgar@student.42.fr>              +#+  +:+       +#+        */
+/*   By: tzizi <tzizi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 16:12:07 by tzizi             #+#    #+#             */
-/*   Updated: 2025/02/04 06:49:40 by zamgar           ###   ########.fr       */
+/*   Updated: 2025/02/04 02:04:24 by tzizi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,17 +83,7 @@ char	*get_next(char **cmd, char *tf)
 	return (NULL);
 }
 
-void	update_lastofile(t_main *main, char *s)
-{
-	if (main->last_ofile)
-	{
-		free(main->last_ofile);
-		main->last_ofile = NULL;
-	}
-	main->last_ofile = ft_strdup(s);
-}
-
-int	get_fd_out(char **cmd, t_main *main)
+int	get_fd_out(char **cmd)
 {
 	int	i;
 	int	fd;
@@ -107,14 +97,10 @@ int	get_fd_out(char **cmd, t_main *main)
 		if (get_next(&cmd[i], ">>"))
 		{
 			fd = handle_opening_outfile(get_next(&cmd[i], ">>"), 1);
-			if (fd > 1)
-				update_lastofile(main, get_next(&cmd[i], ">>"));
 		}
 		else if (get_next(&cmd[i], ">"))
 		{
 			fd = handle_opening_outfile(get_next(&cmd[i], ">"), 0);
-			if (fd > 1)
-				update_lastofile(main, get_next(&cmd[i], ">"));
 		}
 		i++;
 	}
