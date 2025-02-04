@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_utils1.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tzizi <tzizi@student.42.fr>                +#+  +:+       +#+        */
+/*   By: zamgar <zamgar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/02 16:09:58 by zamgar            #+#    #+#             */
-/*   Updated: 2025/02/04 02:46:12 by tzizi            ###   ########.fr       */
+/*   Updated: 2025/02/04 08:22:53 by zamgar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,6 +89,34 @@ int	get_arg_len(char *arg)
 	return (words);
 }
 
+char	**boom(char **pipes, t_main *main)
+{
+	int		i;
+	char	**mini_pip;
+	char	**res;
+	char	*cmd;
+	
+	i = 0;
+	while (pipes[i])
+	{
+		mini_pip = ft_split_k_q_s(main, pipes[i], ' ');
+		main->total_len += get_dchar_len(mini_pip);
+		cmd = find_cmd(mini_pip, main);
+		if (cmd)
+		{
+			main->total_len--;
+			free(cmd);
+		}
+		free_split(mini_pip);
+		i++;
+	}
+	res = malloc((main->total_len + 1) * sizeof(char *));
+	printf("total len : %d\n", main->total_len);
+	if (!res)
+		return (NULL);
+	return (res);
+}
+// cat test | ls | wc -l
 t_cmd	*init_cmd_tokens(char **pipes, t_main *main)
 {
 	char	**pipe;
@@ -96,6 +124,7 @@ t_cmd	*init_cmd_tokens(char **pipes, t_main *main)
 	t_cmd	*tmp;
 	int		i;
 
+	main->arg = boom(pipes, main);
 	pipe = ft_split_k_q_s(main, pipes[0], ' ');
 	cmd_tokens = ft_lstnew(main, pipe);
 	if (cmd_tokens->cmd)
@@ -114,21 +143,23 @@ t_cmd	*init_cmd_tokens(char **pipes, t_main *main)
 	}
 	return (cmd_tokens);
 }
-
+// quotes dolqlr
+//split kqs qvec pipe
 int	order(char *_s, t_main *main)
 {
 	char	*s;
 	char	**pipes;
 
 	(void)main;
-	s = cmd_separate(get_rid_of_spaces(_s));
+	s = get_rid_of_spaces(_s);
 	printf("order 0 '%s'\n", s);
 	if (!s || s[0] == '\0')
 		return (0);
-	pipes = ft_split(s, '|');
+	pipes = ft_split_k_q_s(main, s, '|');
 	for (int i=0;pipes[i];i++)
 		printf("pipe %d '%s'\n", i, pipes[i]);
 	main->cmd_tokens = init_cmd_tokens(pipes, main);
+	// main->arg[main->total_len - 1] = NULL;
 	print_t_cmd(main->cmd_tokens);
 	return (free(s), free_split(pipes), 1);
 }
