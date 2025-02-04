@@ -122,9 +122,10 @@ int	prep_export(t_main *main)
 	if (!main->cmd_tokens->args)
 		return (print_env(main, 1), 0);
 	to_export = ft_split_k_q_s(main, main->cmd_quotes, ' ');
-	i = 0;
+	i = 1;
 	while (to_export[i])
 	{
+		printf("split %s\n", to_export[i]);
 		cmd = ft_strjoin("export ", to_export[i]);
 		export(main, cmd);
 		free(cmd);

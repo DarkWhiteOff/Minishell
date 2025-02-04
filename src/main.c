@@ -42,9 +42,11 @@ void	sub_process(t_main *main, char *cmd)
 			free_end_cmd(main);
 		}
 		free(cmd);
-		free(main->cmd_no_quotes);
+		if (main->cmd_no_quotes)
+			free(main->cmd_no_quotes);
 		main->cmd_no_quotes = NULL;
-		free(main->cmd_quotes);
+		if (main->cmd_quotes)
+			free(main->cmd_quotes);
 		main->cmd_quotes = NULL;
 	}
 }

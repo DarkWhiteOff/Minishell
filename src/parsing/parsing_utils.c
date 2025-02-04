@@ -29,15 +29,17 @@ char	*find_args(char **s, t_main *main)
 	int		i;
 	char	*res;
 	char	*previous;
+	char	*cmd;
 
 	i = 0;
 	res = NULL;
 	previous = NULL;
 	if (!s)
 		return (NULL);
+	cmd = find_cmd(s, main);
 	while (s[i])
 	{
-		if (!is_cmd(s[i], main->path)
+		if ((!is_cmd(s[i], main->path) || ft_strcmp(s[i], cmd) != 0)
 			&& !ft_strnstr(s[i], "<<", ft_strlen(s[i]))
 			&& ft_strcmp(previous, "<<") != 0)
 		{
@@ -48,6 +50,8 @@ char	*find_args(char **s, t_main *main)
 		previous = s[i];
 		i++;
 	}
+	if (cmd)
+		free(cmd);
 	return (res);
 }
 

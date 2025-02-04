@@ -109,11 +109,12 @@ int	prep_unset(t_main *main)
 	if (!main->cmd_tokens->args)
 		return (print_env(main, 1), 0);
 	to_unset = ft_split_k_q_s(main, main->cmd_quotes, ' ');
-	i = 0;
+	i = 1;
 	while (to_unset[i])
 	{
+		printf("split %s\n", to_unset[i]);
 		cmd = ft_strjoin("export ", to_unset[i]);
-		export(main, cmd);
+		unsetc(main, cmd);
 		free(cmd);
 		i++;
 	}

@@ -59,6 +59,8 @@ int	count_words(char *no_space)
 
 	i = 0;
 	word = 0;
+	if (!no_space)
+		return (0);
 	while (no_space[i])
 	{
 		if (ft_isspace(no_space[i]) == 1)

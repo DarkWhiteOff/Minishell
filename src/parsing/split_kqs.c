@@ -22,6 +22,8 @@ char	*cook_nospace(t_main *main, char const *s)
 		return (NULL);
 	get_close_quotes(no_space, main);
 	no_space = replace_dollar(no_space, main);
+	if (!no_space)
+		return (NULL);
 	no_space = handle_sc_c(no_space, main);
 	if (!main->cmd_quotes)
 		main->cmd_quotes = ft_strdup(no_space);
