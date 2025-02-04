@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tzizi <tzizi@student.42.fr>                +#+  +:+       +#+        */
+/*   By: zamgar <zamgar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/07 13:54:25 by zamgar            #+#    #+#             */
-/*   Updated: 2025/02/03 19:28:18 by tzizi            ###   ########.fr       */
+/*   Updated: 2025/02/04 02:22:19 by zamgar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,6 +87,8 @@ typedef struct s_main {
     char	*path;
     int     last_exit_code;
     char    *u_token;
+    char    *cmd_no_quotes;
+    char    *cmd_quotes;
 }	t_main;
 
 // LIBFT
@@ -134,7 +136,7 @@ t_cmd  *ft_lstlast(t_cmd *lst);
 void    print_t_cmd(t_cmd *cmd);//a supr a la fin
 
 //HERE_DOC
-int ft_heredoc(t_cmd *token, int builtin);
+int ft_heredoc(t_cmd *token, int builtin, t_main *main);
 
 /// ENV
 int		init_env(char **env, t_main *main);
@@ -198,7 +200,7 @@ char	**ft_split_k_q_s(t_main *main, char const *s, char c);
 
 /// EXEC
 int	    ft_process(t_main *main);
-int	    builtin(t_main *main);
+void	builtin(t_main *main);
 /// PIPEX
 char    **prep_cmd_exec(t_main *main);
 int     exec(t_main *main);
@@ -225,6 +227,7 @@ char    *add_char_to_str(char *s, char c, int _free);
 
 char	*handle_sc_c(char *arg, t_main *main);
 int	    in_dquote(t_main *main, char *arg_dup, int j);
+int	in_squote(t_main *main, char *arg_dup, int j);
 void	get_close_quotes(char const *s, t_main *main);
 
 #endif

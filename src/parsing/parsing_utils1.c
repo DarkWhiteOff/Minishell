@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_utils1.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tzizi <tzizi@student.42.fr>                +#+  +:+       +#+        */
+/*   By: zamgar <zamgar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/02 16:09:58 by zamgar            #+#    #+#             */
-/*   Updated: 2025/02/03 19:38:15 by tzizi            ###   ########.fr       */
+/*   Updated: 2025/02/04 01:49:07 by zamgar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,6 +99,8 @@ t_cmd   *init_cmd_tokens(char **pipes, t_main *main)
         int     i;
 
         //cat test.txt | grep ligne | wc -l > out.txt
+        i = 0;
+      
         pipe = ft_split_k_q_s(main, pipes[0], ' ');
         cmd_tokens = ft_lstnew(get_fd_in(pipe), get_fd_out(pipe)
                         , find_heredoc_eof(pipe), find_cmd(pipe, main), find_args(pipe, main));
@@ -131,9 +133,10 @@ int     order(char *_s, t_main *main)
         printf("order 0 '%s'\n", s);
         if (!s || s[0] == '\0')
                 return (0);
+        //ft_split_k_q_s(main, s, ' ');
         pipes = ft_split(s, '|'); // separer les pipes
-        for (int i=0;pipes[i];i++)
-                printf("pipe %d '%s'\n", i, pipes[i]);
+        // for (int i=0;pipes[i];i++)
+        //         printf("pipe %d '%s'\n", i, pipes[i]);
         main->cmd_tokens = init_cmd_tokens(pipes, main); // initialisation tokens
         print_t_cmd(main->cmd_tokens);
         return (free(s), free_split(pipes), 1);

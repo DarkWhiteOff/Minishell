@@ -59,13 +59,11 @@ static void	redirect_in_out(t_cmd *token)
 
 void	child_builtin(t_main *main, t_cmd *token)
 {
-	int	exit_code;
-
 	redirect_in_out(token);
 	rl_clear_history();
 	init_signals();
-	exit_code = builtin(main);
-	free_process(main, exit_code);
+	builtin(main);
+	free_process(main, main->last_exit_code);
 }
 
 void	child_process(t_main *main, t_cmd *token)
@@ -78,7 +76,7 @@ void	child_process(t_main *main, t_cmd *token)
 	if (check_builtin(token->cmd))
 		child_builtin(main, token);
 	cmd = cook_cmd(token->cmd);
-	token->infile = ft_heredoc(token, 0);
+	token->infile = ft_heredoc(token, 0, main);
 	token->args = rm_redirections(token->args, token->cmd);
 	printf("final args <%s>\n", token->args);
 	split_args = ft_split(token->args, ' ');

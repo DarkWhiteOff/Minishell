@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: zamgar <zamgar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 15:12:34 by zamgar            #+#    #+#             */
-/*   Updated: 2025/02/03 14:19:42 by marvin           ###   ########.fr       */
+/*   Updated: 2025/02/04 02:57:49 by zamgar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,8 @@ void	set_null_main(t_main *main)
 	main->path = NULL;
 	main->cmd_tokens = NULL;
 	main->u_token = NULL;
+	// main->cmd_no_quotes = NULL;
+	// main->cmd_quotes = NULL;
 
 	// Dolalr struct //
 	main->dollars.i = 0;
@@ -159,8 +161,12 @@ int	main(int argc, char **argv, char **env)
 				ft_process(&main);
 				free_end_cmd(&main);
 			}
+			free(cmd);
+			free(main.cmd_no_quotes);
+			main.cmd_no_quotes = NULL;
+			free(main.cmd_quotes);
+			main.cmd_quotes = NULL;
 		}
-		free(cmd);
 		cat = 0;
 		i++;
 	}

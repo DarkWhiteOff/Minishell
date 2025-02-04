@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tzizi <tzizi@student.42.fr>                +#+  +:+       +#+        */
+/*   By: zamgar <zamgar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/18 14:36:53 by tzizi             #+#    #+#             */
-/*   Updated: 2025/02/03 18:53:34 by tzizi            ###   ########.fr       */
+/*   Updated: 2025/02/04 02:45:53 by zamgar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,5 +95,16 @@ void	free_all_data(t_main *main)
 		free_env(main->env, main->env_len);
 	if (main->export)
 		free_env(main->export, main->export_len);
+	printf("HERE\n");
+	if (main->cmd_no_quotes)
+	{
+		printf("FREEING1\n");
+		free(main->cmd_no_quotes);
+	}
+	if (main->cmd_quotes)
+	{
+		printf("FREEING1\n");
+		free(main->cmd_quotes);
+	}
 	ft_lstclear(&main->cmd_tokens);
 }
