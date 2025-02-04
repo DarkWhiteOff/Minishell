@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tzizi <tzizi@student.42.fr>                +#+  +:+       +#+        */
+/*   By: zamgar <zamgar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/07 13:54:25 by zamgar            #+#    #+#             */
-/*   Updated: 2025/02/04 03:38:27 by tzizi            ###   ########.fr       */
+/*   Updated: 2025/02/04 08:22:03 by zamgar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,8 +87,12 @@ typedef struct s_main
 	char		*path;
 	int			last_exit_code;
 	char		*u_token;
+	char		*last_ofile;
 	char		*cmd_no_quotes;
     char		*cmd_quotes;
+	char		**arg;
+	int			k;
+	int			total_len;
 }	t_main;
 
 // LIBFT
@@ -167,7 +171,7 @@ void	remake_env_fill(char **tmp, t_main *main, int which);
 int		ft_echo(t_main *main);
 char	*find_newline(char *s);
 int		get_fd_in(char **cmd);
-int		get_fd_out(char **cmd);
+int		get_fd_out(char **cmd, t_main *main);
 /// CD
 int		is_special_case(char *actual_arg);
 char	*get_actual_arg(t_main *main, char *arg);
@@ -187,6 +191,7 @@ char	*get_rid_of_spaces(char const *s);
 char	*replace_dollar(char *arg, t_main *main);
 char	*cut_str(char *str, char *cut);
 int		skip_char(char *s, int c, int diff);
+int		check_global_syntax(char *arg, t_main *main);
 
 /// TOKENS
 int		is_cmd(char *s, char *path);
@@ -218,7 +223,7 @@ void	builtin(t_main *main);
 /// PIPEX
 char	**prep_cmd_exec(t_main *main);
 int		exec(t_main *main);
-char	*rm_redirections(char *s, char *cmd);
+char	*rm_redirections(t_cmd *token, char *cmd, int builtin);
 char	*cook_cmd(char *s);
 
 /// FREE

@@ -120,7 +120,7 @@ int	prep_export(t_main *main)
 	cmd = main->cmd_tokens->args;
 	if (!check_syntax_export(cmd))
 		return (0);
-	if (get_arg_len(&ft_strchr(main->cmd_tokens->args, '=')[1]) > 1)
+	if (get_arg_len(&ft_strrchr(main->cmd_tokens->args, '=')[1]) > 1)
 		cmd = cut_str(cmd, ft_strrchr(cmd, ' '));
 	cmd = ft_strjoin("export ", cmd);
 	export(main, cmd);

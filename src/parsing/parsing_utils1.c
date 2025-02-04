@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_utils1.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tzizi <tzizi@student.42.fr>                +#+  +:+       +#+        */
+/*   By: zamgar <zamgar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/02 16:09:58 by zamgar            #+#    #+#             */
-/*   Updated: 2025/02/04 02:46:12 by tzizi            ###   ########.fr       */
+/*   Updated: 2025/02/04 08:22:53 by zamgar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,14 +114,15 @@ t_cmd	*init_cmd_tokens(char **pipes, t_main *main)
 	}
 	return (cmd_tokens);
 }
-
+// quotes dolqlr
+//split kqs qvec pipe
 int	order(char *_s, t_main *main)
 {
 	char	*s;
 	char	**pipes;
 
 	(void)main;
-	s = cmd_separate(get_rid_of_spaces(_s));
+	s = get_rid_of_spaces(_s);
 	printf("order 0 '%s'\n", s);
 	if (!s || s[0] == '\0')
 		return (0);
@@ -129,6 +130,7 @@ int	order(char *_s, t_main *main)
 	for (int i=0;pipes[i];i++)
 		printf("pipe %d '%s'\n", i, pipes[i]);
 	main->cmd_tokens = init_cmd_tokens(pipes, main);
+	// main->arg[main->total_len - 1] = NULL;
 	print_t_cmd(main->cmd_tokens);
 	return (free(s), free_split(pipes), 1);
 }
