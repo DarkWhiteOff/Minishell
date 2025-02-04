@@ -68,7 +68,8 @@ char	*rm_redirections(t_cmd *token, char *cmd, int builtin)
 	}
 	if (!builtin)
 		res = ft_strjoin(cmd, " ");
-	res = ft_strjoin_free(res, tmp, 0);
+	if (tmp)
+		res = ft_strjoin_free(res, tmp, 0);
 	free(token->args);
 	token->args = NULL;
 	return (free(tmp), res);

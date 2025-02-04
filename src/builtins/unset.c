@@ -114,7 +114,7 @@ int	prep_unset(t_main *main)
 	{
 		printf("split %s\n", to_unset[i]);
 		cmd = ft_strjoin("export ", to_unset[i]);
-		unsetc(main, cmd);
+		unset(main, cmd);
 		free(cmd);
 		i++;
 	}

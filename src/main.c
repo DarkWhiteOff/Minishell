@@ -42,6 +42,7 @@ void	sub_process(t_main *main, char *cmd)
 			free_end_cmd(main);
 		}
 		free(cmd);
+		
 		if (main->cmd_no_quotes)
 			free(main->cmd_no_quotes);
 		main->cmd_no_quotes = NULL;
@@ -64,6 +65,11 @@ int	main(int argc, char **argv, char **env)
 	init_signals();
 	while (1)
 	{
+		if (check_var_exists(main.env, main.env_len, "export PATH=") != -1)
+			main.current_path = env[check_var_exists(
+				main.env, main.env_len, "export PATH=")];
+		else
+			main.current_path = NULL;
 		cmd = readline(GREEN"minishell> "RESET);
 		if (cmd == NULL)
 		{

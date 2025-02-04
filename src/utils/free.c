@@ -27,6 +27,7 @@ void	free_end_cmd(t_main *main)
 	if (main->last_ofile)
 		free(main->last_ofile);
 	main->last_ofile = NULL;
+	main->nb_cmd = 0;
 }
 
 void	free_split(char **split)
