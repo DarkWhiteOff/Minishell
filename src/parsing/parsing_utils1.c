@@ -126,7 +126,7 @@ int	order(char *_s, t_main *main)
 	printf("order 0 '%s'\n", s);
 	if (!s || s[0] == '\0')
 		return (0);
-	pipes = ft_split(s, '|');
+	pipes = ft_split_k_q_s(main, s, '|');
 	for (int i=0;pipes[i];i++)
 		printf("pipe %d '%s'\n", i, pipes[i]);
 	main->cmd_tokens = init_cmd_tokens(pipes, main);
