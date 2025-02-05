@@ -6,7 +6,7 @@
 /*   By: zamgar <zamgar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/02 16:09:58 by zamgar            #+#    #+#             */
-/*   Updated: 2025/02/05 14:19:51 by zamgar           ###   ########.fr       */
+/*   Updated: 2025/02/05 16:42:01 by zamgar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,9 +71,9 @@ int	get_arg_len(char *arg)
 		return (0);
 	if (ft_strlen(arg) == 1 && !ft_isspace(arg[0]))
 		return (1);
-	while (i < (int)ft_strlen(arg) - 1)
+	while (i < (int)ft_strlen(arg))
 	{
-		while (i < (int)ft_strlen(arg) - 1)
+		while (i < (int)ft_strlen(arg))
 		{
 			if (ft_isspace(arg[i]))
 				break ;

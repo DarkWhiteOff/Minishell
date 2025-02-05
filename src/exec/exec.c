@@ -22,6 +22,9 @@ void	builtin(t_main *main)
 	command = get_cmd(main->cmd_tokens->cmd);
 	main->cmd_tokens->args = rm_redirections(main->cmd_tokens,
 			main->cmd_tokens->cmd, 1);
+	//printf("command : %s\n", command);
+	//printf("fdin %d fdout %d heredoc '%s' cmd '%s' args '%s'\n", main->cmd_tokens->infile,
+		//main->cmd_tokens->outfile, main->cmd_tokens->heredoc_eof, main->cmd_tokens->cmd, main->cmd_tokens->args);
 	if (ft_strcmp(command, "env") == 0)
 		main->last_exit_code = print_env(main, 0);
 	if (ft_strcmp(command, "export") == 0)
@@ -36,8 +39,11 @@ void	builtin(t_main *main)
 		main->last_exit_code = pwd(main);
 	if (ft_strcmp(command, "exit") == 0)
 	{
-		printf("exit\n");
-		free_process(main, -42);
+		main->last_exit_code = ft_exit(main);
+		if (main->last_exit_code >= 0 && main->last_exit_code <= 255)
+			free_process(main, main->last_exit_code);
+		else if (main->last_exit_code == -1)
+			 main->last_exit_code = 1;
 	}
 }
 
@@ -81,7 +87,7 @@ int	ft_process(t_main *main)
 		g_cat = 1;
 	if (main->nb_cmd >= 1)
 	{
-		if (main->nb_cmd == 1)
+		if (main->nb_cmd == 1) // || (main->nb_cmd >= 1 && !ft_strcmp(main->cmd_tokens->cmd, "exit")) 
 		{
 			if (check_builtin(main->cmd_tokens->cmd))
 			{
@@ -89,7 +95,7 @@ int	ft_process(t_main *main)
 				return (1);
 			}
 		}
-		main->last_exit_code = exec(main);
+		exec(main);
 		main->nb_cmd = 0;
 	}
 	else if (main->cmd_tokens->args || main->cmd_tokens->heredoc_eof)

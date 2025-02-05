@@ -82,7 +82,7 @@ int	check_syntax_export(char *cmd)
 	return (2);
 }
 
-void	export(t_main *main, char *cmd)
+int	export(t_main *main, char *cmd)
 {
 	int		syntax;
 	int		plus;
@@ -90,7 +90,7 @@ void	export(t_main *main, char *cmd)
 
 	syntax = check_syntax_export(cmd);
 	if (syntax == 0)
-		return ;
+		return (1);
 	else if (syntax == 1)
 	{
 		plus = check_plus(cmd);
@@ -108,7 +108,7 @@ void	export(t_main *main, char *cmd)
 		fill_export(main, cmd);
 		//printf("Export Len : %d\n", main->export_len);
 	}
-	return ;
+	return (0);
 }
 
 int	prep_export(t_main *main)
@@ -116,18 +116,21 @@ int	prep_export(t_main *main)
 	char	*cmd;
 	char	**to_export;
 	int		i;
+	int		exit_code;
 
+	exit_code = 0;
 	if (!main->cmd_tokens->args)
 		return (print_env(main, 1), 0);
 	to_export = ft_split_k_q_s(main, main->cmd_quotes, ' ');
 	i = 1;
 	while (to_export[i])
 	{
-		printf("split %s\n", to_export[i]);
+		//printf("split %s\n", to_export[i]);
 		cmd = ft_strjoin("export ", to_export[i]);
-		export(main, cmd);
+		if (export(main, cmd) == 1)
+			exit_code = 1;
 		free(cmd);
 		i++;
 	}
-	return (free_split(to_export), 0);
+	return (free_split(to_export), exit_code);
 }

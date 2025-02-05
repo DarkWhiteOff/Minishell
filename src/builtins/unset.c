@@ -105,7 +105,7 @@ int	prep_unset(t_main *main)
 	int		i;
 
 	if (!main->cmd_tokens->args)
-		return (print_env(main, 1), 0);
+		return (0);
 	to_unset = ft_split_k_q_s(main, main->cmd_quotes, ' ');
 	i = 1;
 	while (to_unset[i])
