@@ -33,7 +33,7 @@ void	child_process(t_main *main, t_cmd *token)
 	cmd = cook_cmd(token->cmd);
 	token->infile = ft_heredoc(token, 0, main);
 	token->args = rm_redirections(token, token->cmd, 0);
-	printf("final args <%s>\n", token->args);
+	//printf("final args <%s>\n", token->args);
 	split_args = ft_split(token->args, ' ');
 	redirect_in_out(token);
 	rl_clear_history();

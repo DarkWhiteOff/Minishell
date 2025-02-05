@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   mega_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tzizi <tzizi@student.42.fr>                +#+  +:+       +#+        */
+/*   By: zamgar <zamgar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 00:01:27 by tzizi             #+#    #+#             */
-/*   Updated: 2025/02/04 18:23:33 by tzizi            ###   ########.fr       */
+/*   Updated: 2025/02/05 14:04:35 by zamgar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ char	*handle_sc_c(char *arg, t_main *main)
 	if (arg == NULL)
 		return (NULL);
 	if (check_global_syntax(arg, main) == 0)
-		return (printf("ok"), arg);
+		return (/* printf("ok"), */ arg);
 	if (main->s_qs[0] == -1 || main->d_qs[0] == -1)
 	{
 		if (ft_strcmp(arg, "!") == 0 || ft_strcmp(arg, ":") == 0)

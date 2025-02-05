@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tzizi <tzizi@student.42.fr>                +#+  +:+       +#+        */
+/*   By: zamgar <zamgar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 15:12:34 by zamgar            #+#    #+#             */
-/*   Updated: 2025/02/04 20:50:25 by tzizi            ###   ########.fr       */
+/*   Updated: 2025/02/05 14:01:49 by zamgar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,8 +41,8 @@ int	quotes_found(char *eof, t_main *main)
 	end_eof = 0;
 	while (eof[end_eof])
 		end_eof++;
-	printf("main->cmd_quotes : %s\n", main->cmd_quotes);
-	printf("main->cmd_quotes[index] : '%c' | main->cmd_quotes[index + end_eof] : %c\n", main->cmd_quotes[index], main->cmd_quotes[index + end_eof - 1]);
+	//printf("main->cmd_quotes : %s\n", main->cmd_quotes);
+	//printf("main->cmd_quotes[index] : '%c' | main->cmd_quotes[index + end_eof] : %c\n", main->cmd_quotes[index], main->cmd_quotes[index + end_eof - 1]);
 	while (main->cmd_quotes[index] != main->cmd_quotes[index + end_eof])
 	{
 		if (in_dquote(main, main->cmd_quotes, index) == 1

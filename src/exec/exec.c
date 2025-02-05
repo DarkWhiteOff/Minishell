@@ -70,7 +70,7 @@ int	u_ttoken(t_main *main)
 
 int	ft_process(t_main *main)
 {
-	printf("nb cmd %d\n", main->nb_cmd);
+	//printf("nb cmd %d\n", main->nb_cmd);
 	if (main->u_token)
 		return (u_ttoken(main));
 	if (!main->current_path && main->cmd_tokens->cmd

@@ -16,12 +16,12 @@ void	print_t_cmd(t_cmd *cmd)
 {
 	while (cmd->next != NULL)
 	{
-		printf("fdin %d fdout %d heredoc '%s' cmd '%s' args '%s'\n",
-			cmd->infile, cmd->outfile, cmd->heredoc_eof, cmd->cmd, cmd->args);
+		//printf("fdin %d fdout %d heredoc '%s' cmd '%s' args '%s'\n",
+			//cmd->infile, cmd->outfile, cmd->heredoc_eof, cmd->cmd, cmd->args);
 		cmd = cmd->next;
 	}
-	printf("fdin %d fdout %d heredoc '%s' cmd '%s' args '%s'\n", cmd->infile,
-		cmd->outfile, cmd->heredoc_eof, cmd->cmd, cmd->args);
+	//printf("fdin %d fdout %d heredoc '%s' cmd '%s' args '%s'\n", cmd->infile,
+		//cmd->outfile, cmd->heredoc_eof, cmd->cmd, cmd->args);
 }
 
 void	ft_lstadd_front(t_cmd **lst, t_cmd *new)

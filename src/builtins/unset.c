@@ -94,7 +94,7 @@ void	unset(t_main *main, char *cmd)
 		return ;
 	unset_env(main, cmd);
 	unset_export(main, cmd);
-	printf("Env Len : %d | Export Len : %d\n", main->env_len, main->export_len);
+	//printf("Env Len : %d | Export Len : %d\n", main->env_len, main->export_len);
 	return ;
 }
 
@@ -110,7 +110,7 @@ int	prep_unset(t_main *main)
 	i = 1;
 	while (to_unset[i])
 	{
-		printf("split %s\n", to_unset[i]);
+		//printf("split %s\n", to_unset[i]);
 		cmd = ft_strjoin("unset ", to_unset[i]);
 		unset(main, cmd);
 		free(cmd);

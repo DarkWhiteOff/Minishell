@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_utils1.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tzizi <tzizi@student.42.fr>                +#+  +:+       +#+        */
+/*   By: zamgar <zamgar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/02 16:09:58 by zamgar            #+#    #+#             */
-/*   Updated: 2025/02/04 18:30:22 by tzizi            ###   ########.fr       */
+/*   Updated: 2025/02/05 14:19:51 by zamgar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ int	get_arg_len(char *arg)
 		}
 		if (!ft_isspace(arg[i - 1]))
 		{
-			printf("%d %s\n", i, &arg[i]);
+			//printf("%d %s\n", i, &arg[i]);
 			words++;
 		}
 		i++;
@@ -124,6 +124,9 @@ int	order(char *_s, t_main *main)
 	s = get_rid_of_spaces(_s);
 	if (!s || s[0] == '\0')
 		return (0);
+	if (check_open_quotes(s, main) == 0)
+		return (free(s), 0);
+	get_close_quotes(s, main);
 	pipes = ft_split_k_q_s(main, s, '|');
 	main->cmd_tokens = init_cmd_tokens(pipes, main);
 	print_t_cmd(main->cmd_tokens);

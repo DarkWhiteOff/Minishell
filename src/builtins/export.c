@@ -101,12 +101,12 @@ void	export(t_main *main, char *cmd)
 		}
 		else
 			fill_env_export(main, cmd);
-		printf("Env Len : %d | Export Len : %d\n", main->env_len, main->export_len);
+		//printf("Env Len : %d | Export Len : %d\n", main->env_len, main->export_len);
 	}
 	else if (syntax == 2)
 	{
 		fill_export(main, cmd);
-		printf("Export Len : %d\n", main->export_len);
+		//printf("Export Len : %d\n", main->export_len);
 	}
 	return ;
 }
