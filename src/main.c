@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zamgar <zamgar@student.42.fr>              +#+  +:+       +#+        */
+/*   By: tzizi <tzizi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 15:12:34 by zamgar            #+#    #+#             */
-/*   Updated: 2025/02/05 14:43:14 by zamgar           ###   ########.fr       */
+/*   Updated: 2025/02/06 10:59:48 by tzizi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,16 +41,17 @@ void	sub_process(t_main *main, char *cmd)
 			main->current_path = NULL;
 		add_history(cmd);
 		if (!order(cmd, main))
-			ft_lstclear(&main->cmd_tokens);
+		{
+			if (main->u_token)
+				main->last_exit_code = u_ttoken(main);
+			free_end_cmd(main);
+		}
 		else
 		{
 			ft_process(main);
 			free_end_cmd(main);
 		}
 		free(cmd);
-		if (main->cmd_no_quotes)
-			free(main->cmd_no_quotes);
-		main->cmd_no_quotes = NULL;
 		if (main->cmd_quotes)
 			free(main->cmd_quotes);
 		main->cmd_quotes = NULL;

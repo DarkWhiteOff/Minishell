@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   check2.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zamgar <zamgar@student.42.fr>              +#+  +:+       +#+        */
+/*   By: tzizi <tzizi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 00:07:16 by tzizi             #+#    #+#             */
-/*   Updated: 2025/02/05 14:03:20 by zamgar           ###   ########.fr       */
+/*   Updated: 2025/02/06 10:40:26 by tzizi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@ int	check_builtin(char *_s)
 {
 	char	*s;
 
+	if (!_s)
+		return (0);
 	s = get_cmd(_s);
 	if (!ft_strncmp(s, "echo", -1) || (!ft_strncmp(s, "cd", -1)
 			|| !ft_strncmp(s, "/bin/cd", -1))
@@ -36,6 +38,8 @@ int	is_cmd(char *s, char *path)
 
 	i = -1;
 	tmp = NULL;
+	if (!s)
+		return (0);
 	if (!ft_strcmp(s, "\0") || !ft_strcmp(s, ".."))
 		return (0);
 	if (!ft_strncmp(&s[0], "./", 2))
@@ -75,14 +79,18 @@ int	check_global_syntax(char *arg, t_main *main)
 	int	j;
 
 	i = 0;
-	while (arg[i])
+	if (!arg)
+		return (1);
+	while (i < (int)ft_strlen(arg))
 	{
+		i += was_in_quotes(&arg[i], main);
+		if (i > (int)ft_strlen(arg))
+			break ;
 		if (ft_strncmp(&arg[i], "<<", 2) == 0
 			|| ft_strncmp(&arg[i], ">>", 2) == 0
 			|| ft_strncmp(&arg[i], "<>", 2) == 0)
 		{
 			j = i + skip_char(&arg[i + 2], ' ', 0) + 2;
-			//printf("arg la i %d j %d %s\n", i , j, &arg[j]);
 			if (i != j)
 			{
 				if (ft_strncmp(&arg[j], "<<", 2) == 0)
@@ -112,7 +120,6 @@ int	check_global_syntax(char *arg, t_main *main)
 			|| ft_strncmp(&arg[i], ">", 1) == 0)
 		{
 			j = i + skip_char(&arg[i + 1], ' ', 0) + 1;
-			//printf("arg la i %d j %d %s\n", i , j, &arg[j]);
 			if (i != j)
 			{
 				if (ft_strncmp(&arg[j], "<<", 2) == 0)
@@ -135,6 +142,5 @@ int	check_global_syntax(char *arg, t_main *main)
 			break ;
 		i++;
 	}
-	//printf("u token %s\n", main->u_token);
 	return (main->u_token == NULL);
 }

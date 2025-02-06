@@ -101,12 +101,10 @@ int	export(t_main *main, char *cmd)
 		}
 		else
 			fill_env_export(main, cmd);
-		//printf("Env Len : %d | Export Len : %d\n", main->env_len, main->export_len);
 	}
 	else if (syntax == 2)
 	{
 		fill_export(main, cmd);
-		//printf("Export Len : %d\n", main->export_len);
 	}
 	return (0);
 }
@@ -121,11 +119,10 @@ int	prep_export(t_main *main)
 	exit_code = 0;
 	if (!main->cmd_tokens->args)
 		return (print_env(main, 1), 0);
-	to_export = ft_split_k_q_s(main, main->cmd_quotes, ' ');
+	to_export = ft_split_k_q_s(main, main->cmd_quotes, ' ', 1);
 	i = 1;
 	while (to_export[i])
 	{
-		//printf("split %s\n", to_export[i]);
 		cmd = ft_strjoin("export ", to_export[i]);
 		if (export(main, cmd) == 1)
 			exit_code = 1;
