@@ -6,7 +6,7 @@
 /*   By: zamgar <zamgar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 17:36:35 by tzizi             #+#    #+#             */
-/*   Updated: 2025/02/06 13:59:12 by zamgar           ###   ########.fr       */
+/*   Updated: 2025/02/06 16:47:51 by zamgar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,14 +33,14 @@ int	wiq2(char *s, t_main *main, int *i, int *j)
 
 int	was_in_quotes(char *_s, t_main *main, char *base)
 {
-	int	i;
-	int	j;
-	int	wq2;
+	int		i;
+	int		j;
+	char	*s;
+	int		wq2;
 
 	i = 0;
 	j = 0;
-	(void)base;
-	char *s = get_rid_of_quotes(_s);
+	s = get_rid_of_quotes(_s);
 	if (ft_strcmp(base, s) != 0)
 	{
 		free(s);

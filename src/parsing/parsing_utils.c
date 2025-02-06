@@ -6,7 +6,7 @@
 /*   By: zamgar <zamgar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/26 16:51:15 by tzizi             #+#    #+#             */
-/*   Updated: 2025/02/06 13:47:22 by zamgar           ###   ########.fr       */
+/*   Updated: 2025/02/06 17:20:04 by zamgar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ char	*find_args(char *_s, t_main *main, char *cmd)
 	s = ft_split_k_q_s(main, _s, ' ', 1);
 	if (!s)
 		return (NULL);
+	get_fd_in(s, main);
 	while (s[++i])
 	{
 		if (((!is_cmd(s[i], main->path) || ft_strcmp(s[i], cmd) != 0)
@@ -75,10 +76,7 @@ char	*find_cmd(char *_s, t_main *main)
 	while (s[i])
 	{
 		if (is_cmd(s[i], main->path) && !cmd)
-		{
-			printf("HERE\n");
 			cmd = ft_strdup(s[i]);
-		}
 		i++;
 	}
 	return (free_split(s), cmd);

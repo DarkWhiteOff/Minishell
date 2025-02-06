@@ -6,7 +6,7 @@
 /*   By: zamgar <zamgar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 15:12:34 by zamgar            #+#    #+#             */
-/*   Updated: 2025/02/06 15:46:46 by zamgar           ###   ########.fr       */
+/*   Updated: 2025/02/06 16:49:46 by zamgar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,9 @@ void	set_null_main(t_main *main)
 	main->dollars.end = 0;
 	main->dollars.r = 0;
 	main->dollars.r1 = 0;
+	main->last_exit_code = 0;
+	main->noFile = NULL;
+	main->lastcmd = -1;
 	main->dollars.rep_pos = 0;
 	main->dollars.check = 0;
 	main->dollars.arg_dup = NULL;

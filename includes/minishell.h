@@ -6,7 +6,7 @@
 /*   By: zamgar <zamgar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/07 13:54:25 by zamgar            #+#    #+#             */
-/*   Updated: 2025/02/06 15:45:01 by zamgar           ###   ########.fr       */
+/*   Updated: 2025/02/06 16:38:11 by zamgar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,11 +76,13 @@ typedef struct s_main
 	int			d_qs[42];
 	int			cl_s_qs[42];
 	int			cl_d_qs[42];
+	int			lastcmd;
 	int			check;
 	int			nb_cmd;
 	char		*path;
 	char		*current_path;
 	int			last_exit_code;
+	char		*noFile;
 	char		*u_token;
 	char		**cmdnf;
 	char		*last_ofile;
@@ -192,6 +194,7 @@ void	remake_env_fill(char **tmp, t_main *main, int which);
 int		ft_echo(t_main *main);
 char	*find_newline(char *s);
 int		get_fd_out(char **cmd, t_main *main);
+int		get_fd_in(char **cmd, t_main *main);
 /// CD
 int		is_special_case(char *actual_arg);
 char	*get_actual_arg(t_main *main, char *arg);
@@ -239,10 +242,11 @@ void	parent_process(t_cmd *token);
 void	redirect_in_out(t_cmd *token);
 int		exec_cmd(t_main *main, t_cmd *token);
 void	wait_all(t_main *main);
+void	wait_solo(t_main *main);
 void	builtin(t_main *main);
 /// PIPEX
 char	**prep_cmd_exec(t_main *main);
-int		exec(t_main *main);
+int		exec(t_main *main, int solo);
 char	*rm_redirections(t_cmd *token, char *cmd, int builtin, t_main *main);
 char	*cook_cmd(char *s);
 
