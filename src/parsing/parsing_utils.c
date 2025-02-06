@@ -6,7 +6,7 @@
 /*   By: zamgar <zamgar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/26 16:51:15 by tzizi             #+#    #+#             */
-/*   Updated: 2025/02/06 13:24:19 by zamgar           ###   ########.fr       */
+/*   Updated: 2025/02/06 13:47:22 by zamgar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,10 @@ char	*find_cmd(char *_s, t_main *main)
 	while (s[i])
 	{
 		if (is_cmd(s[i], main->path) && !cmd)
+		{
+			printf("HERE\n");
 			cmd = ft_strdup(s[i]);
+		}
 		i++;
 	}
 	return (free_split(s), cmd);

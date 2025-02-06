@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   init_main.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tzizi <tzizi@student.42.fr>                +#+  +:+       +#+        */
+/*   By: zamgar <zamgar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 15:12:34 by zamgar            #+#    #+#             */
-/*   Updated: 2025/02/05 16:22:03 by tzizi            ###   ########.fr       */
+/*   Updated: 2025/02/06 15:46:46 by zamgar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ void	set_null_main(t_main *main)
 	main->dollars.tmp2 = NULL;
 	main->dollars.tmp3 = NULL;
 	main->dollars.final_tmp = NULL;
+	g_signal_pid = 0;
 }
 
 char	*get_var_name(char *cmd)

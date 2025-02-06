@@ -36,7 +36,7 @@ void	child_process(t_main *main, t_cmd *token)
 	split_args = ft_split(token->args, ' ');
 	redirect_in_out(token);
 	rl_clear_history();
-	init_signals();
+	init_signals2();
 	execve(cmd, split_args, main->env); // leak cd
 	free(cmd);
 	free_split(split_args);

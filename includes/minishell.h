@@ -6,7 +6,7 @@
 /*   By: zamgar <zamgar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/07 13:54:25 by zamgar            #+#    #+#             */
-/*   Updated: 2025/02/06 13:21:24 by zamgar           ###   ########.fr       */
+/*   Updated: 2025/02/06 15:45:01 by zamgar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@
 # define GREY 	"\033[0;90m"
 # define RESET	"\033[0m"
 
-extern int	g_cat;
+extern pid_t	g_signal_pid;
 
 enum e_type {command, argument, sc};
 
@@ -110,6 +110,7 @@ int		ft_isdigit(int c);
 void	ft_putnbr_fd(int n, int fd);
 char	*ft_itoa(int n);
 int		ft_isalpha(int c);
+char	*ft_strnstr(const char *str, const char *tofind, size_t n);
 
 // MINISHELL
 
@@ -257,6 +258,7 @@ void	free_split(char **split);
 void	sigint(int sig);
 void	sigquit(int sig);
 void	init_signals(void);
+void	init_signals2(void);
 
 /// OTHERS
 int		check_var_exists2(t_main *main, char *arg);

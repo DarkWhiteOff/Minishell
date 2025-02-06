@@ -6,7 +6,7 @@
 /*   By: zamgar <zamgar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/03 17:36:35 by tzizi             #+#    #+#             */
-/*   Updated: 2025/02/06 13:22:37 by zamgar           ###   ########.fr       */
+/*   Updated: 2025/02/06 13:59:12 by zamgar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,11 +53,11 @@ int	was_in_quotes(char *_s, t_main *main, char *base)
 		{
 			wq2 = wiq2(s, main, &i, &j);
 			if (wq2 > 0)
-				return (free(s), wq2);
+				return (free(s), free(base), wq2);
 		}
 		i = j;
 	}
-	return (free(s), 0);
+	return (free(s), free(base), 0);
 }
 
 int	skip_files(char *s, char r, char **res, t_main *main)

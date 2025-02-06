@@ -83,6 +83,8 @@ int	no_cmd(t_main *main)
 				error = 1;
 			}
 		}
+		// else
+		// 	main->lastcmd = token;
 		token = token->next;
 	}
 	return (error);
@@ -90,27 +92,17 @@ int	no_cmd(t_main *main)
 
 int	ft_process(t_main *main)
 {
-	if (no_cmd(main))
-	{
-		t_cmd *token;
-		t_cmd *last_cmd_token;
-		token = main->cmd_tokens;
-		while (token)
-		{
-			if (token->cmd)
-				last_cmd_token = token;
-			token = token->next;
-		}
-		if (last_cmd_token)
-			exec(main);
-		return (1);	
-	}
+	// no_cmd
 	if (!main->current_path && main->cmd_tokens->cmd
 		&& !check_builtin(main->cmd_tokens->cmd))
 		return (ft_error("nsfod", main->cmd_tokens->cmd));
 	if (!ft_strcmp(main->cmd_tokens->cmd, "cat")
-		|| !ft_strcmp(main->cmd_tokens->cmd, "sleep"))
-		g_cat = 1;
+		|| !ft_strcmp(main->cmd_tokens->cmd, "/bin/cat")
+		|| !ft_strcmp(main->cmd_tokens->cmd, "/bin/sleep")
+		|| !ft_strcmp(main->cmd_tokens->cmd, "sleep")
+		|| !ft_strcmp(main->cmd_tokens->cmd, "grep")
+		|| !ft_strcmp(main->cmd_tokens->cmd, "/bin/grep"))
+		g_signal_pid = 1;
 	if (main->nb_cmd >= 1)
 	{
 		if (main->nb_cmd == 1)
