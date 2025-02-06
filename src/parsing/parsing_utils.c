@@ -6,7 +6,7 @@
 /*   By: zamgar <zamgar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/26 16:51:15 by tzizi             #+#    #+#             */
-/*   Updated: 2025/02/06 17:20:04 by zamgar           ###   ########.fr       */
+/*   Updated: 2025/02/06 18:43:24 by zamgar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,8 +65,10 @@ char	*find_cmd(char *_s, t_main *main)
 	int		i;
 	char	**s;
 	char	*cmd;
+	int		eof;
 
 	i = 0;
+	eof = 0;
 	if (!_s)
 		return (NULL);
 	s = ft_split_k_q_s(main, _s, ' ', 1);
@@ -75,8 +77,13 @@ char	*find_cmd(char *_s, t_main *main)
 	cmd = NULL;
 	while (s[i])
 	{
-		if (is_cmd(s[i], main->path) && !cmd)
+		if (get_next(&s[i], "<<") && eof != 1)
+			eof = i;
+		if (is_cmd(s[i], main->path) && !cmd && eof != (i - 1))
+		{
+			eof = 0;
 			cmd = ft_strdup(s[i]);
+		}
 		i++;
 	}
 	return (free_split(s), cmd);

@@ -14,10 +14,6 @@
 
 void	print_t_cmd(t_cmd *cmd)
 {
-	if (!cmd)
-		printf("no token\n");
-	if (!cmd)
-		return ;
 	while (cmd->next != NULL)
 	{
 		printf("fdin %d fdout %d heredoc '%s' cmd '%s' args '%s'\n",

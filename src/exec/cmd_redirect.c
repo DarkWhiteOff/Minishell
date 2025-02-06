@@ -6,7 +6,7 @@
 /*   By: zamgar <zamgar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 16:12:07 by tzizi             #+#    #+#             */
-/*   Updated: 2025/02/06 16:42:09 by zamgar           ###   ########.fr       */
+/*   Updated: 2025/02/06 18:42:26 by zamgar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -150,7 +150,7 @@ int	get_fd_in(char **cmd, t_main *main)
 		return (fd);
 	while (cmd[i])
 	{
-		if (get_next(&cmd[i], "<"))
+		if (get_next(&cmd[i], "<") && !get_next(&cmd[i], "<<"))
 		{
 			if (fd > 0)
 				close (fd);

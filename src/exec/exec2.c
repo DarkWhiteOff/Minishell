@@ -30,8 +30,11 @@ void	child_process(t_main *main, t_cmd *token)
 		free_process(main, 2);
 	if (check_builtin(token->cmd))
 		child_builtin(main, token);
-	cmd = cook_cmd(token->cmd);
-	token->infile = ft_heredoc(token, 0, main);
+	if (!ft_strncmp(token->cmd, "./", 2))
+		cmd = ft_strdup(token->cmd);
+	else
+		cmd = cook_cmd(token->cmd);
+	token->infile = ft_heredoc(token, 0);
 	token->args = rm_redirections(token, token->cmd, 0, main);
 	split_args = ft_split(token->args, ' ');
 	redirect_in_out(token);

@@ -6,7 +6,7 @@
 /*   By: zamgar <zamgar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/07 13:54:25 by zamgar            #+#    #+#             */
-/*   Updated: 2025/02/06 16:38:11 by zamgar           ###   ########.fr       */
+/*   Updated: 2025/02/06 18:42:55 by zamgar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -166,7 +166,7 @@ void	update_sq_pos(t_main *main, int r, int r1, int diff);
 char	*cut_str(char *str, char *cut);
 
 //HERE_DOC
-int		ft_heredoc(t_cmd *token, int builtin, t_main *main);
+int		ft_heredoc(t_cmd *token, int builtin);
 
 /// ENV
 int		init_env(char **env, t_main *main);
