@@ -6,7 +6,7 @@
 /*   By: zamgar <zamgar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/07 13:54:25 by zamgar            #+#    #+#             */
-/*   Updated: 2025/02/06 11:12:58 by zamgar           ###   ########.fr       */
+/*   Updated: 2025/02/06 13:21:24 by zamgar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,7 +124,7 @@ char	*find_cmd(char *s, t_main *main);
 char	*find_args(char *_s, t_main *main, char *cmd);
 char	*find_heredoc_eof(char *_s, t_main *main);
 char	*get_next(char **cmd, char *tf);
-int		was_in_quotes(char *s, t_main *main);
+int		was_in_quotes(char *_s, t_main *main, char *base);
 int		u_ttoken(t_main *main);
 //t_cmd utils
 void	ft_lstclear(t_cmd **lst);

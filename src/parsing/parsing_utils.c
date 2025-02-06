@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parsing_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tzizi <tzizi@student.42.fr>                +#+  +:+       +#+        */
+/*   By: zamgar <zamgar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/26 16:51:15 by tzizi             #+#    #+#             */
-/*   Updated: 2025/02/06 11:03:52 by tzizi            ###   ########.fr       */
+/*   Updated: 2025/02/06 13:24:19 by zamgar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ char	*find_args(char *_s, t_main *main, char *cmd)
 		if (((!is_cmd(s[i], main->path) || ft_strcmp(s[i], cmd) != 0)
 				&& !ft_strnstr(s[i], "<<", ft_strlen(s[i]))
 				&& ft_strcmp(previous, "<<") != 0)
-			|| (was_in_quotes(s[i], main) && !is_cmd(s[i], main->path))
+			|| (was_in_quotes(s[i], main, ft_substr(s[i], 0, ft_strlen(s[i]))) && !is_cmd(s[i], main->path))
 			|| (!ft_strcmp(s[i], cmd) && !ft_strcmp(cmd, "exit")))
 			find_args_res(&res, &s[i]);
 		previous = s[i];
