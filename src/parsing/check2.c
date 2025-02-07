@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   check2.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tzizi <tzizi@student.42.fr>                +#+  +:+       +#+        */
+/*   By: zamgar <zamgar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 00:07:16 by tzizi             #+#    #+#             */
-/*   Updated: 2025/02/07 14:50:31 by tzizi            ###   ########.fr       */
+/*   Updated: 2025/02/07 18:51:35 by zamgar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,19 @@ int	check_builtin(char *_s)
 	return (0);
 }
 
+int	check_return_value(int check, int check2)
+{
+	if (!check && check2 == -1)
+		return (0);
+	if (check && check2)
+		return (0);
+	if (check && !check2)
+		return (0);
+	if (!check && check2)
+		return (1);
+	return (-1);
+}
+
 int	check_first_cmd(char *s, t_main *main)
 {
 	int	dir;
@@ -48,21 +61,14 @@ int	check_first_cmd(char *s, t_main *main)
 	if (!ft_strncmp(&s[0], "./", 2)
 		&& access(&ft_strchr(s, '/')[1], X_OK) == -1)
 	{
-		if (main->noFile)
-			free(main->noFile);
-		main->noFile = NULL;
-		main->noFile = ft_strdup(s);
+		if (main->nofile)
+			free(main->nofile);
+		main->nofile = NULL;
+		main->nofile = ft_strdup(s);
 		check2 = -1;
 	}
-	if (!check && check2 == -1)
-		return (0);
-	if (check && check2)
-		return (0);
-	if (check && !check2)
-		return (0);
-	if (!check && check2)
-		return (1);
-	return (-1);
+	dir = check_return_value(check, check2);
+	return (dir);
 }
 
 int	is_cmd(char *s, t_main *main)
@@ -105,76 +111,4 @@ int	is_sc(char *s)
 	if (ft_strchr(s, '$'))
 		return (2);
 	return (0);
-}
-
-int	check_global_syntax(char *arg, t_main *main)
-{
-	int	i;
-	int	j;
-
-	i = 0;
-	if (!arg)
-		return (1);
-	while (i < (int)ft_strlen(arg))
-	{
-		i += was_in_quotes(&arg[i], main, ft_substr(&arg[i], 0, ft_strlen(&arg[i])));
-		if (i > (int)ft_strlen(arg))
-			break ;
-		if (ft_strncmp(&arg[i], "<<", 2) == 0
-			|| ft_strncmp(&arg[i], ">>", 2) == 0
-			|| ft_strncmp(&arg[i], "<>", 2) == 0)
-		{
-			j = i + skip_char(&arg[i + 2], ' ', 0) + 2;
-			if (i != j)
-			{
-				if (ft_strncmp(&arg[j], "<<", 2) == 0)
-					main->u_token = "<<";
-				else if (ft_strncmp(&arg[j], ">>", 2) == 0)
-					main->u_token = ">>";
-				else if (ft_strncmp(&arg[j], "<>", 2) == 0)
-					main->u_token = "<>";
-				else if (ft_strncmp(&arg[j], "><", 2) == 0)
-					main->u_token = "><";
-				else if (ft_strncmp(&arg[j], "<", 1) == 0)
-					main->u_token = "<";
-				else if (ft_strncmp(&arg[j], ">", 1) == 0)
-					main->u_token = ">";
-			}
-			if (arg[i + 2] == '\0')
-				main->u_token = "newline";
-			else if (arg[i + 2] == arg[i])
-			{
-				if (arg[i] == '>')
-					main->u_token = ">>";
-				else if (arg[i] == '<')
-					main->u_token = "<<";
-			}
-		}
-		else if (ft_strncmp(&arg[i], "<", 1) == 0
-			|| ft_strncmp(&arg[i], ">", 1) == 0)
-		{
-			j = i + skip_char(&arg[i + 1], ' ', 0) + 1;
-			if (i != j)
-			{
-				if (ft_strncmp(&arg[j], "<<", 2) == 0)
-					main->u_token = "<<";
-				else if (ft_strncmp(&arg[j], ">>", 2) == 0)
-					main->u_token = ">>";
-				else if (ft_strncmp(&arg[j], "<>", 2) == 0)
-					main->u_token = "<>";
-				else if (ft_strncmp(&arg[j], "><", 2) == 0)
-					main->u_token = "><";
-				else if (ft_strncmp(&arg[j], "<", 1) == 0)
-					main->u_token = "<";
-				else if (ft_strncmp(&arg[j], ">", 1) == 0)
-					main->u_token = ">";
-			}
-			if (arg[i + 1] == '\0')
-				main->u_token = "newline";
-		}
-		if (main->u_token)
-			break ;
-		i++;
-	}
-	return (main->u_token == NULL);
 }

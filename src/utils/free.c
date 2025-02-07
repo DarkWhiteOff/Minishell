@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   free.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: tzizi <tzizi@student.42.fr>                +#+  +:+       +#+        */
+/*   By: zamgar <zamgar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/18 14:36:53 by tzizi             #+#    #+#             */
-/*   Updated: 2025/02/07 11:29:23 by tzizi            ###   ########.fr       */
+/*   Updated: 2025/02/07 18:51:39 by zamgar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,9 +26,9 @@ void	free_end_cmd(t_main *main)
 	if (access("heredoc.tmp", F_OK) == 0)
 		unlink("heredoc.tmp");
 	main->u_token = NULL;
-	if (main->noFile)
-		free(main->noFile);
-	main->noFile = NULL;
+	if (main->nofile)
+		free(main->nofile);
+	main->nofile = NULL;
 	if (main->last_ofile)
 		free(main->last_ofile);
 	main->last_ofile = NULL;
