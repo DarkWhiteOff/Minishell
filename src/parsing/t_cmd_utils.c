@@ -14,6 +14,10 @@
 
 void	print_t_cmd(t_cmd *cmd)
 {
+	if (!cmd)
+		printf("no token\n");
+	if (!cmd)
+		return ;
 	while (cmd->next != NULL)
 	{
 		printf("fdin %d fdout %d heredoc '%s' cmd '%s' args '%s'\n",
@@ -50,7 +54,8 @@ t_cmd	*ft_lstnew(t_main *main, char *cmd)
 	if (node == NULL)
 		return (NULL);
 	node->cmd = find_cmd(cmd, main);
-	node->args = find_args(cmd, main, node->cmd);
+	node->no_file = NULL;
+	node->args = find_args(cmd, main, node->cmd, node);
 	node->infile = -1;
 	split = ft_split_k_q_s(main, cmd, ' ', 1);
 	node->outfile = get_fd_out(split, main);

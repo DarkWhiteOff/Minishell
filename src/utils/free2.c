@@ -6,7 +6,7 @@
 /*   By: zamgar <zamgar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/12/18 14:36:53 by tzizi             #+#    #+#             */
-/*   Updated: 2025/02/06 18:44:12 by zamgar           ###   ########.fr       */
+/*   Updated: 2025/02/06 18:29:11 by zamgar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,10 @@ void	clear_node(t_cmd *node)
 		close(node->outfile);
 	if (node->heredoc_eof)
 		free(node->heredoc_eof);
+	if (node->no_file)
+		free(node->no_file);
 	node->cmd = NULL;
+	node->no_file  = NULL;
 	node->args = NULL;
 	node->heredoc_eof = NULL;
 	node->next = NULL;
@@ -51,6 +54,8 @@ void	ft_lstclear(t_cmd **lst)
 
 void	ft_lstdelone(t_cmd *lst)
 {
+	if (!lst)
+		return ;
 	clear_node(lst);
 	free(lst);
 }

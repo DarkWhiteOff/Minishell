@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zamgar <zamgar@student.42.fr>              +#+  +:+       +#+        */
+/*   By: tzizi <tzizi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/07 13:54:25 by zamgar            #+#    #+#             */
-/*   Updated: 2025/02/06 18:42:55 by zamgar           ###   ########.fr       */
+/*   Updated: 2025/02/07 11:28:39 by tzizi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,7 @@ typedef struct s_cmd
 	char			*cmd;
 	char			*args;
 	char			*heredoc_eof;
+	char			*no_file;
 	int				infile;
 	int				outfile;
 	int				pip[2];
@@ -62,6 +63,7 @@ typedef struct s_dollar
 	char	*tmp2;
 	char	*tmp3;
 	char	*final_tmp;
+	int		ok;
 }	t_dollar;
 
 typedef struct s_main
@@ -72,6 +74,7 @@ typedef struct s_main
 	int			export_len;
 	t_cmd		*cmd_tokens;
 	t_dollar	dollars;
+	int			dollars_ok;
 	int			s_qs[42];
 	int			d_qs[42];
 	int			cl_s_qs[42];
@@ -124,7 +127,7 @@ int		get_dchar_len(char **split);
 int		get_arg_len(char *arg);
 int		order(char *s, t_main *main);
 char	*find_cmd(char *s, t_main *main);
-char	*find_args(char *_s, t_main *main, char *cmd);
+char	*find_args(char *_s, t_main *main, char *cmd, t_cmd *token);
 char	*find_heredoc_eof(char *_s, t_main *main);
 char	*get_next(char **cmd, char *tf);
 int		was_in_quotes(char *_s, t_main *main, char *base);
@@ -194,7 +197,7 @@ void	remake_env_fill(char **tmp, t_main *main, int which);
 int		ft_echo(t_main *main);
 char	*find_newline(char *s);
 int		get_fd_out(char **cmd, t_main *main);
-int		get_fd_in(char **cmd, t_main *main);
+int		get_fd_in(char **cmd, t_main *main, t_cmd *token);
 /// CD
 int		is_special_case(char *actual_arg);
 char	*get_actual_arg(t_main *main, char *arg);
@@ -243,7 +246,7 @@ void	redirect_in_out(t_cmd *token);
 int		exec_cmd(t_main *main, t_cmd *token);
 void	wait_all(t_main *main);
 void	wait_solo(t_main *main);
-void	builtin(t_main *main);
+void	builtin(t_main *main, t_cmd *token);
 /// PIPEX
 char	**prep_cmd_exec(t_main *main);
 int		exec(t_main *main, int solo);

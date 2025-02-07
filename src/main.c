@@ -6,7 +6,7 @@
 /*   By: zamgar <zamgar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 15:12:34 by zamgar            #+#    #+#             */
-/*   Updated: 2025/02/06 18:44:28 by zamgar           ###   ########.fr       */
+/*   Updated: 2025/02/06 18:32:25 by zamgar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,8 +44,6 @@ void	sub_process(t_main *main, char *cmd)
 		{
 			if (main->u_token)
 				main->last_exit_code = u_ttoken(main);
-			else if (main->noFile)
-				main->last_exit_code = ft_error("nosfod", main->noFile);
 			free_end_cmd(main);
 		}
 		else
