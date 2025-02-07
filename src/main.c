@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: zamgar <zamgar@student.42.fr>              +#+  +:+       +#+        */
+/*   By: tzizi <tzizi@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/18 15:12:34 by zamgar            #+#    #+#             */
-/*   Updated: 2025/02/06 18:32:25 by zamgar           ###   ########.fr       */
+/*   Updated: 2025/02/07 14:54:26 by tzizi            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,8 @@ void	sub_process(t_main *main, char *cmd)
 		{
 			if (main->u_token)
 				main->last_exit_code = u_ttoken(main);
+			else
+				main->last_exit_code = 0;
 			free_end_cmd(main);
 		}
 		else
@@ -79,6 +81,8 @@ int	main(int argc, char **argv, char **env)
 		sub_process(&main, cmd);
 		g_signal_pid = 0;
 	}
+	if (cmd)
+		free(cmd);
 	free_all_data(&main);
 	rl_clear_history();
 	return (0);
