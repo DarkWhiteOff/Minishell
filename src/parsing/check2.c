@@ -6,7 +6,7 @@
 /*   By: zamgar <zamgar@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/04 00:07:16 by tzizi             #+#    #+#             */
-/*   Updated: 2025/02/07 18:51:35 by zamgar           ###   ########.fr       */
+/*   Updated: 2025/02/07 21:44:24 by zamgar           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ int	is_cmd(char *s, t_main *main)
 
 	i = -1;
 	tmp = NULL;
-	if (!s)
+	if (check_no_path(s, main) == 1)
 		return (0);
 	if (check_first_cmd(s, main) == 1)
 		return (1);
